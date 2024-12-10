@@ -9,4 +9,5 @@ public class Author
     public string? Nationality { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public DateTime? DateOfDeath { get; set; }
+    public List<Book> Books { get; set; } = [];
 }
