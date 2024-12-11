@@ -30,10 +30,9 @@ public class PublisherController(IPublisherService publisherService) : Controlle
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPublisher([FromBody]AddPublisherRequest addPublisherRequest)
+    public async Task<IActionResult> AddPublisher([FromBody] AddPublisherRequest addPublisherRequest)
     {
         await publisherService.AddPublisher(addPublisherRequest);
         return Ok();
     }
-
 }
