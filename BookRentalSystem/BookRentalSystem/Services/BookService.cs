@@ -50,9 +50,9 @@ public class BookService(AppDbContext dbContext) : IBookService
         return new GetBookResponse(book.Title, book.Description);
     }
 
-    public async Task UpdateBook(UpdateBookRequest updateBookRequest)
+    public async Task UpdateBook(int bookId, UpdateBookRequest updateBookRequest)
     {
-        var book = await dbContext.Books.FindAsync(updateBookRequest.bookId);
+        var book = await dbContext.Books.FindAsync(bookId);
 
         if (book is null)
         {
