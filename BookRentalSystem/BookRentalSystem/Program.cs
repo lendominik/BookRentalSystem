@@ -16,7 +16,7 @@ builder.Services.AddExceptionHandler<ExceptionHandler>();
 
 var app = builder.Build();
 
-app.UseExceptionHandler(_ => { });
+app.UseExceptionHandler("/error");
 
 // Configure the HTTP request pipeline.
 
