@@ -7,6 +7,7 @@ using BookRentalSystem.Services.Interfaces;
 
 namespace BookRentalSystem.Services;
 
+[Service(ServiceLifetime.Scoped)]
 public class ReviewService(AppDbContext dbContext) : IReviewService
 {
     public async Task AddReview(AddReviewRequest addReviewRequest)
