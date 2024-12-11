@@ -29,8 +29,8 @@ public class BookController(IBookService bookService) : ControllerBase
         return Ok();
     }
 
-    [HttpPost("{bookId}")]
-    public async Task<IActionResult> UpdateBook([FromBody]AddBookRequest AddBookRequest)
+    [HttpPost]
+    public async Task<IActionResult> AddBook([FromBody]AddBookRequest AddBookRequest)
     {
         await bookService.AddBook(AddBookRequest);
         return Ok();
