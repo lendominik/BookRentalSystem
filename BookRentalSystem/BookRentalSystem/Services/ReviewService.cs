@@ -4,6 +4,7 @@ using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
 using BookRentalSystem.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Services;
 
@@ -25,7 +26,7 @@ public class ReviewService(AppDbContext dbContext) : IReviewService
 
     public async Task DeleteReview(int reviewId)
     {
-        var review = await dbContext.Reviews.FindAsync(reviewId);
+        var review = await dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
 
         if (review is null)
         {
@@ -38,7 +39,7 @@ public class ReviewService(AppDbContext dbContext) : IReviewService
 
     public async Task<GetReviewResponse> GetReview(int reviewId)
     {
-        var review = await dbContext.Reviews.FindAsync(reviewId);
+        var review = await dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
 
         if (review is null)
         {

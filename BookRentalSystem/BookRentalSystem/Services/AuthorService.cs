@@ -4,6 +4,7 @@ using BookRentalSystem.Exceptions;
 using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthorRentalSystem.Services;
 
@@ -28,7 +29,7 @@ public class AuthorService(AppDbContext dbContext) : IAuthorService
 
     public async Task DeleteAuthor(int authorId)
     {
-        var author = await dbContext.Authors.FindAsync(authorId);
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
 
         if (author is null)
         {
@@ -41,7 +42,7 @@ public class AuthorService(AppDbContext dbContext) : IAuthorService
 
     public async Task<GetAuthorResponse> GetAuthor(int authorId)
     {
-        var author = await dbContext.Authors.FindAsync(authorId);
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
 
         if (author is null)
         {
@@ -59,7 +60,7 @@ public class AuthorService(AppDbContext dbContext) : IAuthorService
 
     public async Task UpdateAuthor(int authorId, UpdateAuthorRequest updateAuthorRequest)
     {
-        var author = await dbContext.Authors.FindAsync(authorId);
+        var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
 
         if (author is null)
         {

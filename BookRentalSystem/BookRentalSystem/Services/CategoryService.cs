@@ -4,6 +4,7 @@ using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
 using BookRentalSystem.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Services;
 
@@ -24,7 +25,7 @@ public class CategoryService(AppDbContext dbContext) : ICategoryService
 
     public async Task DeleteCategory(int categoryId)
     {
-        var category = await dbContext.Categories.FindAsync(categoryId);
+        var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
 
         if (category is null)
         {
@@ -37,7 +38,7 @@ public class CategoryService(AppDbContext dbContext) : ICategoryService
 
     public async Task<GetCategoryResponse> GetCategory(int categoryId)
     {
-        var category = await dbContext.Categories.FindAsync(categoryId);
+        var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
 
         if (category is null)
         {
@@ -49,7 +50,7 @@ public class CategoryService(AppDbContext dbContext) : ICategoryService
 
     public async Task UpdateCategory(int categoryId, UpdateCategoryRequest updateCategoryRequest)
     {
-        var category = await dbContext.Categories.FindAsync(categoryId);
+        var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
 
         if (category is null)
         {

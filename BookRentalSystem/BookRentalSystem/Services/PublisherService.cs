@@ -4,6 +4,7 @@ using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
 using BookRentalSystem.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Services;
 
@@ -24,7 +25,7 @@ public class PublisherService(AppDbContext dbContext) : IPublisherService
 
     public async Task DeletePublisher(int publisherId)
     {
-        var publisher = await dbContext.Publishers.FindAsync(publisherId);
+        var publisher = await dbContext.Publishers.FirstOrDefaultAsync(p => p.Id == publisherId);
 
         if (publisher is null)
         {
@@ -37,7 +38,7 @@ public class PublisherService(AppDbContext dbContext) : IPublisherService
 
     public async Task<GetPublisherResponse> GetPublisher(int publisherId)
     {
-        var publisher = await dbContext.Publishers.FindAsync(publisherId);
+        var publisher = await dbContext.Publishers.FirstOrDefaultAsync(p => p.Id == publisherId);
 
         if (publisher is null)
         {
@@ -49,7 +50,7 @@ public class PublisherService(AppDbContext dbContext) : IPublisherService
 
     public async Task UpdatePublisher(int publisherId, UpdatePublisherRequest updatePublisherRequest)
     {
-        var publisher = await dbContext.Publishers.FindAsync(publisherId);
+        var publisher = await dbContext.Publishers.FirstOrDefaultAsync(p => p.Id == publisherId);
 
         if (publisher is null)
         {

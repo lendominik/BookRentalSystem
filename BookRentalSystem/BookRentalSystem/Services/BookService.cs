@@ -4,6 +4,7 @@ using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
 using BookRentalSystem.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Services;
 
@@ -27,7 +28,7 @@ public class BookService(AppDbContext dbContext) : IBookService
 
     public async Task DeleteBook(int bookId)
     {
-        var book = await dbContext.Books.FindAsync(bookId);
+        var book = await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
 
         if (book is null)
         {
@@ -40,7 +41,7 @@ public class BookService(AppDbContext dbContext) : IBookService
 
     public async Task<GetBookResponse> GetBook(int bookId)
     {
-        var book = await dbContext.Books.FindAsync(bookId);
+        var book = await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
 
         if (book is null)
         {
@@ -52,7 +53,7 @@ public class BookService(AppDbContext dbContext) : IBookService
 
     public async Task UpdateBook(int bookId, UpdateBookRequest updateBookRequest)
     {
-        var book = await dbContext.Books.FindAsync(bookId);
+        var book = await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
 
         if (book is null)
         {
