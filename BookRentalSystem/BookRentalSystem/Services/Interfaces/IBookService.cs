@@ -8,5 +8,5 @@ public interface IBookService
     Task<GetBookResponse> GetBook(int bookId);
     Task AddBook(AddBookRequest addBookRequest);
     Task UpdateBook(UpdateBookRequest updateBookRequest);
-    Task DeleteBook(DeleteBookRequest deleteBookRequest);
+    Task DeleteBook(int bookId);
 }

@@ -25,9 +25,9 @@ public class BookService(AppDbContext dbContext) : IBookService
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteBook(DeleteBookRequest deleteBookRequest)
+    public async Task DeleteBook(int bookId)
     {
-        var book = await dbContext.Books.FindAsync(deleteBookRequest.bookId);
+        var book = await dbContext.Books.FindAsync(bookId);
 
         if (book is null)
         {
