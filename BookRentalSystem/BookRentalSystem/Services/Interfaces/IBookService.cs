@@ -5,8 +5,8 @@ namespace BookRentalSystem.Services.Interfaces;
 
 public interface IBookService
 {
-    GetBookResponse GetBook(int bookId);
-    void AddBook(AddBookRequest addBookRequest);
-    void UpdateBook(UpdateBookRequest updateBookRequest);
-    void DeleteBook(DeleteBookRequest deleteBookRequest);
+    Task<GetBookResponse> GetBook(int bookId);
+    Task AddBook(AddBookRequest addBookRequest);
+    Task UpdateBook(UpdateBookRequest updateBookRequest);
+    Task DeleteBook(DeleteBookRequest deleteBookRequest);
 }
