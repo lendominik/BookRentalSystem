@@ -1,5 +1,8 @@
 using BookRentalSystem.Exceptions;
+using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Persistence;
+using BookRentalSystem.Validators;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conn
 
 builder.Services.AddServices();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
+builder.Services.AddScoped<IValidator<AddBookRequest>, AddBookRequestValidator>();
+builder.Services.AddScoped<IValidator<AddReviewRequest>, AddReviewRequestValidator>();
 
 var app = builder.Build();
 

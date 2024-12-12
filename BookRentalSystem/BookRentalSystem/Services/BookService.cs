@@ -4,26 +4,20 @@ using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
 using BookRentalSystem.Services.Interfaces;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Services;
 
 [Service(ServiceLifetime.Scoped)]
-public class BookService(AppDbContext dbContext) : IBookService
+public class BookService(AppDbContext dbContext, IValidator<AddBookRequest> validator) : IBookService
 {
     public async Task AddBook(AddBookRequest addBookRequest)
     {
-        var isAuthorExsisting = await dbContext.Authors.AnyAsync(author => author.Id == addBookRequest.authorId);
-        if (!isAuthorExsisting)
-            throw new NotFoundException("Author not found");
+        var validationResult = await validator.ValidateAsync(addBookRequest);
 
-        var isCategoryExsisting = await dbContext.Categories.AnyAsync(category => category.Id == addBookRequest.categoryId);
-        if (!isCategoryExsisting)
-            throw new NotFoundException("Category not found");
-
-        var isPublisherExsisting = await dbContext.Publishers.AnyAsync(publisher => publisher.Id == addBookRequest.publisherId);
-        if (!isPublisherExsisting)
-            throw new NotFoundException("Publisher not found");
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
         var book = new Book
         {

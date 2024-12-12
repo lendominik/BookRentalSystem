@@ -4,18 +4,21 @@ using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
 using BookRentalSystem.Services.Interfaces;
+using BookRentalSystem.Validators;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Services;
 
 [Service(ServiceLifetime.Scoped)]
-public class ReviewService(AppDbContext dbContext) : IReviewService
+public class ReviewService(AppDbContext dbContext, AddReviewRequestValidator validator) : IReviewService
 {
     public async Task AddReview(AddReviewRequest addReviewRequest)
     {
-        var isBookExsisting = await dbContext.Books.AnyAsync(book => book.Id == addReviewRequest.bookId);
-        if (!isBookExsisting)
-            throw new NotFoundException("Book not found");
+        var validationResult = await validator.ValidateAsync(addReviewRequest);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
         var review = new Review
         {
