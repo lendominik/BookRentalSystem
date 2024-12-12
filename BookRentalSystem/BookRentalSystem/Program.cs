@@ -1,4 +1,4 @@
-using BookRentalSystem.Exceptions;
+using BookRentalSystem.Middlewares;
 using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Persistence;
 using BookRentalSystem.Validators;

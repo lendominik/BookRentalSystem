@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using BookRentalSystem.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace BookRentalSystem.Exceptions;
+namespace BookRentalSystem.Middlewares;
 
 public class ExceptionHandler : IExceptionHandler
 {
