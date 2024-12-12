@@ -32,9 +32,7 @@ public class AuthorService(AppDbContext dbContext) : IAuthorService
         var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
 
         if (author is null)
-        {
             throw new NotFoundException("Author not found");
-        }
 
         dbContext.Authors.Remove(author);
         await dbContext.SaveChangesAsync();
@@ -45,9 +43,7 @@ public class AuthorService(AppDbContext dbContext) : IAuthorService
         var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
 
         if (author is null)
-        {
             throw new NotFoundException("Author not found");
-        }
 
         return new GetAuthorResponse(
             author.FistName,
@@ -63,12 +59,9 @@ public class AuthorService(AppDbContext dbContext) : IAuthorService
         var author = await dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
 
         if (author is null)
-        {
             throw new NotFoundException("Author not found");
-        }
 
         author.Description = updateAuthorRequest.description;
-
         await dbContext.SaveChangesAsync();
     }
 }
