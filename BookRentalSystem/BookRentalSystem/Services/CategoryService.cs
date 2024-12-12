@@ -28,9 +28,7 @@ public class CategoryService(AppDbContext dbContext) : ICategoryService
         var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
 
         if (category is null)
-        {
             throw new NotFoundException("Category not found");
-        }
 
         dbContext.Categories.Remove(category);
         await dbContext.SaveChangesAsync();
@@ -41,9 +39,7 @@ public class CategoryService(AppDbContext dbContext) : ICategoryService
         var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
 
         if (category is null)
-        {
             throw new NotFoundException("Category not found");
-        }
 
         return new GetCategoryResponse(category.Name, category.Description);
     }
@@ -53,9 +49,7 @@ public class CategoryService(AppDbContext dbContext) : ICategoryService
         var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
 
         if (category is null)
-        {
             throw new NotFoundException("Category not found");
-        }
 
         category.Name = updateCategoryRequest.name;
         category.Description = updateCategoryRequest.description;

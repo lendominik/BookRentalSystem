@@ -28,9 +28,7 @@ public class PublisherService(AppDbContext dbContext) : IPublisherService
         var publisher = await dbContext.Publishers.FirstOrDefaultAsync(p => p.Id == publisherId);
 
         if (publisher is null)
-        {
             throw new NotFoundException("Publisher not found");
-        }
 
         dbContext.Publishers.Remove(publisher);
         await dbContext.SaveChangesAsync();
@@ -41,9 +39,7 @@ public class PublisherService(AppDbContext dbContext) : IPublisherService
         var publisher = await dbContext.Publishers.FirstOrDefaultAsync(p => p.Id == publisherId);
 
         if (publisher is null)
-        {
             throw new NotFoundException("Publisher not found");
-        }
 
         return new GetPublisherResponse(publisher.Name, publisher.Description);
     }
@@ -53,9 +49,7 @@ public class PublisherService(AppDbContext dbContext) : IPublisherService
         var publisher = await dbContext.Publishers.FirstOrDefaultAsync(p => p.Id == publisherId);
 
         if (publisher is null)
-        {
             throw new NotFoundException("Publisher not found");
-        }
 
         publisher.Name = updatePublisherRequest.name;
         publisher.Description = updatePublisherRequest.description;

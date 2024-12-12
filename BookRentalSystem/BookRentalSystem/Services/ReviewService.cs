@@ -13,6 +13,10 @@ public class ReviewService(AppDbContext dbContext) : IReviewService
 {
     public async Task AddReview(AddReviewRequest addReviewRequest)
     {
+        var isBookExsisting = await dbContext.Books.AnyAsync(book => book.Id == addReviewRequest.bookId);
+        if (!isBookExsisting)
+            throw new NotFoundException("Book not found");
+
         var review = new Review
         {
             ReviewerName = addReviewRequest.reviewerName,

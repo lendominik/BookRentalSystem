@@ -13,6 +13,18 @@ public class BookService(AppDbContext dbContext) : IBookService
 {
     public async Task AddBook(AddBookRequest addBookRequest)
     {
+        var isAuthorExsisting = await dbContext.Authors.AnyAsync(author => author.Id == addBookRequest.authorId);
+        if (!isAuthorExsisting)
+            throw new NotFoundException("Author not found");
+
+        var isCategoryExsisting = await dbContext.Categories.AnyAsync(category => category.Id == addBookRequest.categoryId);
+        if (!isCategoryExsisting)
+            throw new NotFoundException("Category not found");
+
+        var isPublisherExsisting = await dbContext.Publishers.AnyAsync(publisher => publisher.Id == addBookRequest.publisherId);
+        if (!isPublisherExsisting)
+            throw new NotFoundException("Publisher not found");
+
         var book = new Book
         {
             AuthorId = addBookRequest.authorId,
@@ -28,12 +40,10 @@ public class BookService(AppDbContext dbContext) : IBookService
 
     public async Task DeleteBook(int bookId)
     {
-        var book = await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+        var book = await dbContext.Books.AnyAsync(book => book.Id == bookId);
 
         if (book is null)
-        {
             throw new NotFoundException("Book not found");
-        }
 
         dbContext.Books.Remove(book);
         await dbContext.SaveChangesAsync();
@@ -44,9 +54,7 @@ public class BookService(AppDbContext dbContext) : IBookService
         var book = await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
 
         if (book is null)
-        {
             throw new NotFoundException("Book not found");
-        }
 
         return new GetBookResponse(book.Title, book.Description);
     }
@@ -56,9 +64,7 @@ public class BookService(AppDbContext dbContext) : IBookService
         var book = await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
 
         if (book is null)
-        {
             throw new NotFoundException("Book not found");
-        }
 
         book.Title = updateBookRequest.title;
         book.Description = updateBookRequest.description;
