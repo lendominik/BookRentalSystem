@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-                builder.Configuration.GetConnectionString("BillShareDbContext")));
+var connectionString = builder.Configuration["ConnectionString"];
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddServices();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
