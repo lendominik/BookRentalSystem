@@ -2,7 +2,6 @@
 using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Persistence;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Validators;
 
@@ -13,12 +12,8 @@ public class AddReviewRequestValidator : AbstractValidator<AddReviewRequest>
     {
         _dbContext = dbContext;
 
-        RuleFor(review => review.bookId)
-            .MustAsync(BookExists).WithMessage("The specified book does not exist.");
-    }
-
-    private async Task<bool> BookExists(int bookId, CancellationToken cancellationToken)
-    {
-        return await _dbContext.Set<Book>().AnyAsync(book => book.Id == bookId, cancellationToken);
+        RuleFor(request => request.bookId)
+            .Exists<AddReviewRequest, Category>(dbContext)
+            .WithMessage("The specified category does not exist.");
     }
 }
