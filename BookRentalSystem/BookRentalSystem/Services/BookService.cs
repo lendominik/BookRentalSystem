@@ -40,7 +40,7 @@ public class BookService(AppDbContext dbContext) : IBookService
 
     public async Task DeleteBook(int bookId)
     {
-        var book = await dbContext.Books.AnyAsync(book => book.Id == bookId);
+        var book = await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
 
         if (book is null)
             throw new NotFoundException("Book not found");
