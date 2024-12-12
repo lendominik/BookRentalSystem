@@ -1,3 +1,4 @@
+using BookRentalSystem.Exceptions;
 using BookRentalSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,8 +12,11 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
                 builder.Configuration.GetConnectionString("BillShareDbContext")));
 
 builder.Services.AddServices();
+builder.Services.AddExceptionHandler<ExceptionHandler>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler("/error");
 
 // Configure the HTTP request pipeline.
 

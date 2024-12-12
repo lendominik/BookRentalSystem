@@ -11,4 +11,5 @@ public class Book
     public Author Author { get; set; } = null!;
     public int PublisherId { get; set; }
     public Publisher Publisher { get; set; } = null!;
+    public List<Review> Reviews { get; set; } = [];
 }
