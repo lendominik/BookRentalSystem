@@ -16,10 +16,9 @@ public class ReviewService(AppDbContext dbContext, AddReviewRequestValidator val
     public async Task AddReview(AddReviewRequest addReviewRequest)
     {
         var validationResult = await validator.ValidateAsync(addReviewRequest);
+
         if (!validationResult.IsValid)
-        {
             throw new ValidationException(validationResult.Errors);
-        }
 
         var review = new Review
         {

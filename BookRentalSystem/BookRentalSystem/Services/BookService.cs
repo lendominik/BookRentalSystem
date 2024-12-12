@@ -15,10 +15,9 @@ public class BookService(AppDbContext dbContext, IValidator<AddBookRequest> vali
     public async Task AddBook(AddBookRequest addBookRequest)
     {
         var validationResult = await validator.ValidateAsync(addBookRequest);
+
         if (!validationResult.IsValid)
-        {
             throw new ValidationException(validationResult.Errors);
-        }
 
         var book = new Book
         {
