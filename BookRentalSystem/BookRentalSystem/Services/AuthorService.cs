@@ -6,7 +6,7 @@ using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuthorRentalSystem.Services;
+namespace BookRentalSystem.Services;
 
 [Service(ServiceLifetime.Scoped)]
 public class AuthorService(AppDbContext dbContext) : IAuthorService
