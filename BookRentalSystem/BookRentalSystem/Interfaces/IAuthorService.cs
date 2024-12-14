@@ -1,7 +1,7 @@
 ﻿using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 
-namespace AuthorRentalSystem.Services.Interfaces;
+namespace BookRentalSystem.Interfaces;
 
 public interface IAuthorService
 {

@@ -1,4 +1,4 @@
-﻿using AuthorRentalSystem.Services.Interfaces;
+﻿using BookRentalSystem.Interfaces;
 using BookRentalSystem.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 

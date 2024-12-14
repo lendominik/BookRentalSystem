@@ -1,9 +1,9 @@
 ﻿using BookRentalSystem.Entities;
 using BookRentalSystem.Exceptions;
+using BookRentalSystem.Interfaces;
 using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
-using BookRentalSystem.Services.Interfaces;
 using BookRentalSystem.Validators;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
