@@ -1,38 +1,64 @@
-﻿using Core.Interfaces;
-using Core.Models.Requests;
+﻿using BookRentalSystem.Exceptions;
+using BookRentalSystem.Models.Requests;
+using Core.Entities;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
 
 [Route("api/v1/author")]
 [ApiController]
-public class AuthorController(IAuthorService authorService) : ControllerBase
+public class AuthorController(IGenericRepository<Author> repository) : ControllerBase
 {
     [HttpGet("{authorId}")]
     public async Task<IActionResult> GetAuthor([FromRoute] int authorId)
     {
-        var author = await authorService.GetAuthor(authorId);
+        var author = await repository.GetByIdAsync(authorId);
+
+        if (author is null)
+            throw new NotFoundException("Author not found");
+
         return Ok(author);
     }
 
     [HttpDelete("{authorId}")]
     public async Task<IActionResult> DeleteAuthor([FromRoute] int authorId)
     {
-        await authorService.DeleteAuthor(authorId);
+        var author = await repository.GetByIdAsync(authorId);
+
+        if (author is null)
+            throw new NotFoundException("Author not found");
+
+        repository.Delete(author);
         return Ok();
     }
 
     [HttpPut("{authorId}")]
     public async Task<IActionResult> UpdateAuthor([FromRoute] int authorId, [FromBody] UpdateAuthorRequest updateAuthorRequest)
     {
-        await authorService.UpdateAuthor(authorId, updateAuthorRequest);
+        var author = await repository.GetByIdAsync(authorId);
+
+        if (author is null)
+            throw new NotFoundException("Author not found");
+
+        repository.Update(author);
         return Ok();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAuthor([FromBody] AddAuthorRequest AddAuthorRequest)
+    public IActionResult AddAuthor([FromBody] AddAuthorRequest addAuthorRequest)
     {
-        await authorService.AddAuthor(AddAuthorRequest);
+        var author = new Author
+        {
+            FistName = addAuthorRequest.firstName,
+            LastName = addAuthorRequest.lastName,
+            Description = addAuthorRequest.description,
+            Nationality = addAuthorRequest.nationality,
+            DateOfBirth = addAuthorRequest.dateOfBirth,
+            DateOfDeath = addAuthorRequest.dateOfDeath
+        };
+
+        repository.Add(author);
         return Ok();
     }
 }

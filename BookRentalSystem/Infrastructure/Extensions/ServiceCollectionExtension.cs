@@ -16,10 +16,6 @@ public static class ServiceCollectionExtension
 
         services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
-        services.AddScoped<IAuthorService, AuthorService>();
-        services.AddScoped<IBookService, BookService>();
-        services.AddScoped<IPublisherService, PublisherService>();
-        services.AddScoped<IReviewService, ReviewService>();
-        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
     }
 }

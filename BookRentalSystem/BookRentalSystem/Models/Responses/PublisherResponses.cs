@@ -1,3 +1,3 @@
-﻿namespace Core.Models.Responses;
+﻿namespace BookRentalSystem.Models.Responses;
 
 public record GetPublisherResponse(string name, string? description);

@@ -1,3 +1,3 @@
-﻿namespace Core.Models.Responses;
+﻿namespace BookRentalSystem.Models.Responses;
 
 public record GetCategoryResponse(string name, string? description);
