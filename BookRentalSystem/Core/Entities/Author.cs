@@ -1,8 +1,7 @@
-﻿namespace BookRentalSystem.Entities;
+﻿namespace Core.Entities;
 
-public class Author
+public class Author : BaseEntity
 {
-    public int Id { get; set; }
     public string FistName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string? Description { get; set; }

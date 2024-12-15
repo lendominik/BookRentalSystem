@@ -1,7 +1,7 @@
-﻿using BookRentalSystem.Entities;
+﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookRentalSystem.Persistence;
+namespace Infrastructure.Persistence;
 
 public class AppDbContext : DbContext
 {
