@@ -1,8 +1,7 @@
-﻿using BookRentalSystem.Entities;
-using BookRentalSystem.Models.Requests;
-using BookRentalSystem.Persistence;
+﻿using Core.Entities;
+using Core.Models.Requests;
+using Infrastructure.Persistence;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Validators;
 

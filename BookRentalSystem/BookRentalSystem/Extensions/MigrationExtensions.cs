@@ -1,4 +1,4 @@
-﻿using BookRentalSystem.Persistence;
+﻿using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalSystem.Extensions;

@@ -1,5 +1,5 @@
-﻿using BookRentalSystem.Interfaces;
-using BookRentalSystem.Models.Requests;
+﻿using Core.Interfaces;
+using Core.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;

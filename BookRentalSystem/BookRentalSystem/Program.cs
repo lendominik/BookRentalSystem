@@ -1,21 +1,17 @@
 using BookRentalSystem.Extensions;
 using BookRentalSystem.Middlewares;
-using BookRentalSystem.Models.Requests;
-using BookRentalSystem.Persistence;
+using Core.Models.Requests;
 using BookRentalSystem.Validators;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+using Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddControllers();
-
-var connectionString = builder.Configuration["ConnectionString"]
-    ?? builder.Configuration.GetConnectionString("DefaultConnection");
-
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddServices();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
@@ -24,7 +20,7 @@ builder.Services.AddScoped<IValidator<AddReviewRequest>, AddReviewRequestValidat
 
 var app = builder.Build();
 
-if ( app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.ApplyMigrations();
 }
