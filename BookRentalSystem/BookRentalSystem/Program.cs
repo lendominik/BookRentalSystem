@@ -13,7 +13,6 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 
-builder.Services.AddServices();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddScoped<IValidator<AddBookRequest>, AddBookRequestValidator>();
 builder.Services.AddScoped<IValidator<AddReviewRequest>, AddReviewRequestValidator>();
