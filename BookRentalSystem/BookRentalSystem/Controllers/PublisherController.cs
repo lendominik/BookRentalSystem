@@ -69,7 +69,7 @@ public class PublisherController(IGenericRepository<Publisher> repository) : Con
 
         if (await repository.SaveAllAsync())
         {
-            return CreatedAtAction(nameof(GetPublisher), new { publisher = publisher.Id }, publisher);
+            return CreatedAtAction(nameof(GetPublisher), new { publisherId = publisher.Id }, publisher);
         }
 
         return BadRequest("Problem creating publisher");

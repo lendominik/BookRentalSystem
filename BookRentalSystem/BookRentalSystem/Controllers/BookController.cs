@@ -79,7 +79,7 @@ public class BookController(IGenericRepository<Book> repository) : ControllerBas
 
         if (await repository.SaveAllAsync())
         {
-            return CreatedAtAction(nameof(GetBook), new { book = book.Id }, book);
+            return CreatedAtAction(nameof(GetBook), new { bookId = book.Id }, book);
         }
 
         return BadRequest("Problem creating book");

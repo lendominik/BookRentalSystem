@@ -70,7 +70,7 @@ public class AuthorController(IGenericRepository<Author> repository) : Controlle
 
         if (await repository.SaveAllAsync())
         {
-            return CreatedAtAction(nameof(GetAuthor), new { author = author.Id }, author);
+            return CreatedAtAction(nameof(GetAuthor), new { authorId = author.Id }, author);
         }
 
         return BadRequest("Problem creating book");

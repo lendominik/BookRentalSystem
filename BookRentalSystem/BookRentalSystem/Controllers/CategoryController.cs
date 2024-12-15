@@ -69,7 +69,7 @@ public class CategoryController(IGenericRepository<Category> repository) : Contr
 
         if (await repository.SaveAllAsync())
         {
-            return CreatedAtAction(nameof(GetCategory), new { category = category.Id }, category);
+            return CreatedAtAction(nameof(GetCategory), new { categoryId = category.Id }, category);
         }
 
         return BadRequest("Problem creating category");
