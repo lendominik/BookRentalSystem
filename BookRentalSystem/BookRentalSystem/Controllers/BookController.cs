@@ -14,7 +14,7 @@ public class BookController(IGenericRepository<Book> repository) : ControllerBas
     {
         var book = await repository.GetByIdAsync(bookId);
 
-        if (book is null) return NotFound();
+        if (book is null) return NotFound("Book not found");
 
         return Ok(book);
     }
