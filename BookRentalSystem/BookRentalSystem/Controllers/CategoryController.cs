@@ -1,5 +1,4 @@
-﻿using BookRentalSystem.Exceptions;
-using BookRentalSystem.Models.Requests;
+﻿using BookRentalSystem.Models.Requests;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,7 @@ public class CategoryController(IGenericRepository<Category> repository) : Contr
     {
         var category = await repository.GetByIdAsync(categoryId);
 
-        if (category is null)
-            throw new NotFoundException("Category not found");
+        if (category is null) return NotFound("Category not found");
 
         return Ok(category);
     }
@@ -26,11 +24,16 @@ public class CategoryController(IGenericRepository<Category> repository) : Contr
     {
         var category = await repository.GetByIdAsync(categoryId);
 
-        if (category is null)
-            throw new NotFoundException("Category not found");
+        if (category is null) return NotFound("Category not found");
 
         repository.Delete(category);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem deleting the category");
     }
 
     [HttpPut("{categoryId}")]
@@ -38,18 +41,23 @@ public class CategoryController(IGenericRepository<Category> repository) : Contr
     {
         var category = await repository.GetByIdAsync(categoryId);
 
-        if (category is null)
-            throw new NotFoundException("Category not found");
+        if (category is null) return NotFound("Category not found");
 
         category.Name = updateCategoryRequest.name;
         category.Description = updateCategoryRequest.description;
 
         repository.Update(category);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem updating the category");
     }
 
     [HttpPost]
-    public IActionResult AddCategory([FromBody]AddCategoryRequest addCategoryRequest)
+    public async Task<IActionResult> AddCategory([FromBody]AddCategoryRequest addCategoryRequest)
     {
         var category = new Category
         {
@@ -58,6 +66,12 @@ public class CategoryController(IGenericRepository<Category> repository) : Contr
         };
 
         repository.Add(category);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return CreatedAtAction(nameof(GetCategory), new { category = category.Id }, category);
+        }
+
+        return BadRequest("Problem creating category");
     }
 }

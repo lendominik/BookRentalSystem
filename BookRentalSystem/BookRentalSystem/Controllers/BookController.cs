@@ -1,5 +1,4 @@
-﻿using BookRentalSystem.Exceptions;
-using BookRentalSystem.Models.Requests;
+﻿using BookRentalSystem.Models.Requests;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,7 @@ public class BookController(IGenericRepository<Book> repository) : ControllerBas
     {
         var book = await repository.GetByIdAsync(bookId);
 
-        if (book is null)
-            throw new NotFoundException("Book not found");
+        if (book is null) return NotFound();
 
         return Ok(book);
     }
@@ -26,11 +24,16 @@ public class BookController(IGenericRepository<Book> repository) : ControllerBas
     {
         var book = await repository.GetByIdAsync(bookId);
 
-        if (book is null)
-            throw new NotFoundException("Book not found");
+        if (book is null) return NotFound("Book not found");
 
         repository.Delete(book);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem deleting the book");
     }
 
     [HttpPut("{bookId}")]
@@ -38,30 +41,30 @@ public class BookController(IGenericRepository<Book> repository) : ControllerBas
     {
         var book = await repository.GetByIdAsync(bookId);
 
-        if (book is null)
-            throw new NotFoundException("Book not found");
+        if (book is null) return NotFound("Book not found");
 
         book.Title = updateBookRequest.title;
         book.Description = updateBookRequest.description;
 
         repository.Update(book);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem updating the book");
     }
 
     [HttpPost]
     public async Task<IActionResult> AddBook([FromBody]AddBookRequest addBookRequest)
     {
-        var author = await repository.GetByIdAsync(addBookRequest.authorId);
-        if (author is null)
-            throw new NotFoundException("Author not found");
+        var authorExsists = repository.Exists(addBookRequest.authorId);
+        var publisherExsists = repository.Exists(addBookRequest.authorId);
+        var categoryExsists = repository.Exists(addBookRequest.authorId);
 
-        var publisher = await repository.GetByIdAsync(addBookRequest.authorId);
-        if (publisher is null)
-            throw new NotFoundException("Publisher not found");
-
-        var category = await repository.GetByIdAsync(addBookRequest.authorId);
-        if (category is null)
-            throw new NotFoundException("Category not found");
+        if (!authorExsists || !publisherExsists || !categoryExsists)
+            return NotFound("Author, Publisher or Category not found");
 
         var book = new Book
         {
@@ -73,6 +76,12 @@ public class BookController(IGenericRepository<Book> repository) : ControllerBas
         };
 
         repository.Add(book);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return CreatedAtAction(nameof(GetBook), new { book = book.Id }, book);
+        }
+
+        return BadRequest("Problem creating book");
     }
 }

@@ -1,5 +1,4 @@
-﻿using BookRentalSystem.Exceptions;
-using BookRentalSystem.Models.Requests;
+﻿using BookRentalSystem.Models.Requests;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,7 @@ public class AuthorController(IGenericRepository<Author> repository) : Controlle
     {
         var author = await repository.GetByIdAsync(authorId);
 
-        if (author is null)
-            throw new NotFoundException("Author not found");
+        if (author is null) return NotFound();
 
         return Ok(author);
     }
@@ -26,11 +24,16 @@ public class AuthorController(IGenericRepository<Author> repository) : Controlle
     {
         var author = await repository.GetByIdAsync(authorId);
 
-        if (author is null)
-            throw new NotFoundException("Author not found");
+        if (author is null) return NotFound("Author not found");
 
         repository.Delete(author);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem deleting the author");
     }
 
     [HttpPut("{authorId}")]
@@ -38,15 +41,20 @@ public class AuthorController(IGenericRepository<Author> repository) : Controlle
     {
         var author = await repository.GetByIdAsync(authorId);
 
-        if (author is null)
-            throw new NotFoundException("Author not found");
+        if (author is null) return NotFound("Author not found");
 
         repository.Update(author);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem updating the author");
     }
 
     [HttpPost]
-    public IActionResult AddAuthor([FromBody] AddAuthorRequest addAuthorRequest)
+    public async Task<IActionResult> AddAuthor([FromBody] AddAuthorRequest addAuthorRequest)
     {
         var author = new Author
         {
@@ -59,6 +67,12 @@ public class AuthorController(IGenericRepository<Author> repository) : Controlle
         };
 
         repository.Add(author);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return CreatedAtAction(nameof(GetAuthor), new { author = author.Id }, author);
+        }
+
+        return BadRequest("Problem creating book");
     }
 }
