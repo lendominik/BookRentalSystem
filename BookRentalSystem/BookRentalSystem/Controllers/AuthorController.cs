@@ -1,8 +1,8 @@
-﻿using AuthorRentalSystem.Services.Interfaces;
+﻿using BookRentalSystem.Interfaces;
 using BookRentalSystem.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuthorRentalSystem.Controllers;
+namespace BookRentalSystem.Controllers;
 
 [Route("api/v1/author")]
 [ApiController]

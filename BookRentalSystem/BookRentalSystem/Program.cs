@@ -1,3 +1,4 @@
+using BookRentalSystem.Extensions;
 using BookRentalSystem.Middlewares;
 using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Persistence;
@@ -22,6 +23,11 @@ builder.Services.AddScoped<IValidator<AddBookRequest>, AddBookRequestValidator>(
 builder.Services.AddScoped<IValidator<AddReviewRequest>, AddReviewRequestValidator>();
 
 var app = builder.Build();
+
+if ( app.Environment.IsDevelopment())
+{
+    app.ApplyMigrations();
+}
 
 app.UseExceptionHandler("/error");
 

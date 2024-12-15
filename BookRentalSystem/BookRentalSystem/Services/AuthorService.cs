@@ -1,12 +1,12 @@
-﻿using AuthorRentalSystem.Services.Interfaces;
-using BookRentalSystem.Entities;
+﻿using BookRentalSystem.Entities;
 using BookRentalSystem.Exceptions;
+using BookRentalSystem.Interfaces;
 using BookRentalSystem.Models.Requests;
 using BookRentalSystem.Models.Responses;
 using BookRentalSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuthorRentalSystem.Services;
+namespace BookRentalSystem.Services;
 
 [Service(ServiceLifetime.Scoped)]
 public class AuthorService(AppDbContext dbContext) : IAuthorService

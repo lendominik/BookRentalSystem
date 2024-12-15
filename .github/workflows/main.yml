@@ -25,7 +25,7 @@ jobs:
         run: pwd
       - name: Restore dependencies
         working-directory: ./BookRentalSystem
-        run: dotnet restore
+        run: dotnet restore BookRentalSystem.sln
       - name: Build
         working-directory: ./BookRentalSystem
-        run: dotnet build --no-restore
+        run: dotnet build BookRentalSystem.sln --no-restore
