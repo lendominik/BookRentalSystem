@@ -12,6 +12,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -26,6 +28,9 @@ app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
+    .WithOrigins("http://localhost:5000", "https://localhost:5001"));
 
 app.MapControllers();
 

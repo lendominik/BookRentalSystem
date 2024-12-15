@@ -1,5 +1,4 @@
-﻿using BookRentalSystem.Exceptions;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace BookRentalSystem.Middlewares;
@@ -10,7 +9,6 @@ public class ExceptionHandler : IExceptionHandler
     {
         (int statusCode, string errorMessage) = exception switch
         {
-            NotFoundException notFoundException => (403, notFoundException.Message),
             ValidationException validationException => (400, validationException.Message),
             _ => (500, "Something went wrong.")
         };

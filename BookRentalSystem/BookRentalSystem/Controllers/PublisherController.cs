@@ -1,5 +1,4 @@
-﻿using BookRentalSystem.Exceptions;
-using BookRentalSystem.Models.Requests;
+﻿using BookRentalSystem.Models.Requests;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,7 @@ public class PublisherController(IGenericRepository<Publisher> repository) : Con
     {
         var publisher = await repository.GetByIdAsync(publisherId);
 
-        if (publisher is null)
-            throw new NotFoundException("Publisher not found");
+        if (publisher is null) return NotFound("Publisher not found");
 
         return Ok(publisher);
     }
@@ -26,11 +24,16 @@ public class PublisherController(IGenericRepository<Publisher> repository) : Con
     {
         var publisher = await repository.GetByIdAsync(publisherId);
 
-        if (publisher is null)
-            throw new NotFoundException("Publisher not found");
+        if (publisher is null) return NotFound("Publisher not found");
 
         repository.Delete(publisher);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem deleting the publisher");
     }
 
     [HttpPut("{publisherId}")]
@@ -38,18 +41,23 @@ public class PublisherController(IGenericRepository<Publisher> repository) : Con
     {
         var publisher = await repository.GetByIdAsync(publisherId);
 
-        if (publisher is null)
-            throw new NotFoundException("Publisher not found");
+        if (publisher is null) return NotFound("Publisher not found");
 
         publisher.Name = updatePublisherRequest.name;
         publisher.Description = updatePublisherRequest.description;
 
         repository.Update(publisher);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem updating the publisher");
     }
 
     [HttpPost]
-    public IActionResult AddPublisher([FromBody] AddPublisherRequest addPublisherRequest)
+    public async Task<IActionResult> AddPublisher([FromBody] AddPublisherRequest addPublisherRequest)
     {
         var publisher = new Publisher
         {
@@ -58,6 +66,12 @@ public class PublisherController(IGenericRepository<Publisher> repository) : Con
         };
 
         repository.Add(publisher);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return CreatedAtAction(nameof(GetPublisher), new { publisherId = publisher.Id }, publisher);
+        }
+
+        return BadRequest("Problem creating publisher");
     }
 }

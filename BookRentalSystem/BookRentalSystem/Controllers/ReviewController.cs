@@ -1,5 +1,4 @@
-﻿using BookRentalSystem.Exceptions;
-using BookRentalSystem.Models.Requests;
+﻿using BookRentalSystem.Models.Requests;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,7 @@ public class ReviewController(IGenericRepository<Review> repository) : Controlle
     {
         var review = await repository.GetByIdAsync(reviewId);
 
-        if (review is null)
-            throw new NotFoundException("Review not found");
+        if (review is null) return NotFound("Review not found");
 
         return Ok(review);
     }
@@ -26,19 +24,23 @@ public class ReviewController(IGenericRepository<Review> repository) : Controlle
     {
         var review = await repository.GetByIdAsync(reviewId);
 
-        if (review is null)
-            throw new NotFoundException("Review not found");
+        if (review is null) return NotFound("Review not found");
 
         repository.Delete(review);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+
+        return BadRequest("Problem deleting the review");
     }
 
     [HttpPost]
     public async Task<IActionResult> AddReview([FromBody]AddReviewRequest addReviewRequest)
     {
-        var book = await repository.GetByIdAsync(addReviewRequest.bookId);
-        if (book is null)
-            throw new NotFoundException("Book not found");
+        var bookExists = repository.Exists(addReviewRequest.bookId);
+        if (!bookExists) return NotFound("Book not found");
 
         var review = new Review
         {
@@ -48,6 +50,12 @@ public class ReviewController(IGenericRepository<Review> repository) : Controlle
         };
 
         repository.Add(review);
-        return Ok();
+
+        if (await repository.SaveAllAsync())
+        {
+            return CreatedAtAction(nameof(GetReview), new { reviewId = review.Id }, review);
+        }
+
+        return BadRequest("Problem creating review");
     }
 }
