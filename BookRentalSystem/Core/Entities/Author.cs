@@ -2,7 +2,7 @@
 
 public class Author : BaseEntity
 {
-    public string FistName { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string? Description { get; set; }
     public string? Nationality { get; set; }

@@ -58,7 +58,7 @@ public class AuthorController(IGenericRepository<Author> repository) : Controlle
     {
         var author = new Author
         {
-            FistName = addAuthorRequest.firstName,
+            FirstName = addAuthorRequest.firstName,
             LastName = addAuthorRequest.lastName,
             Description = addAuthorRequest.description,
             Nationality = addAuthorRequest.nationality,
