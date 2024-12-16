@@ -1,5 +1,4 @@
-﻿using BookRentalSystem.Models.Requests;
-using BookRentalSystem.Publisher.Commands.CreatePublisherCommand;
+﻿using BookRentalSystem.Publisher.Commands.CreatePublisherCommand;
 using BookRentalSystem.Publisher.Commands.DeletePublisherCommand;
 using BookRentalSystem.Publisher.Commands.EditPublisherCommand;
 using BookRentalSystem.Publisher.Queries.GetPublisherByIdQuery;
