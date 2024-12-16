@@ -1,77 +1,42 @@
-﻿using BookRentalSystem.Models.Requests;
-using Core.Entities;
-using Core.Interfaces;
+﻿using BookRentalSystem.Category.Commands.CreateCategoryCommand;
+using BookRentalSystem.Category.Commands.DeleteCategoryCommand;
+using BookRentalSystem.Category.Commands.EditCategoryCommand;
+using BookRentalSystem.Category.Queries.GetCategoryByIdQuery;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
 
 [Route("api/v1/category")]
 [ApiController]
-public class CategoryController(IGenericRepository<Category> repository) : ControllerBase
+public class CategoryController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{categoryId}")]
     public async Task<IActionResult> GetCategory([FromRoute]int categoryId)
     {
-        var category = await repository.GetByIdAsync(categoryId);
-
-        if (category is null) return NotFound("Category not found");
-
+        var category = await mediator.Send(new GetCategoryByIdQuery(categoryId));
         return Ok(category);
     }
 
     [HttpDelete("{categoryId}")]
     public async Task<IActionResult> DeleteCategory([FromRoute]int categoryId)
     {
-        var category = await repository.GetByIdAsync(categoryId);
-
-        if (category is null) return NotFound("Category not found");
-
-        repository.Delete(category);
-
-        if (await repository.SaveAllAsync())
-        {
-            return NoContent();
-        }
-
-        return BadRequest("Problem deleting the category");
+        await mediator.Send(new DeleteCategoryCommand(categoryId));
+        return Ok();
     }
 
     [HttpPut("{categoryId}")]
-    public async Task<IActionResult> UpdateCategory([FromRoute]int categoryId, [FromBody]UpdateCategoryRequest updateCategoryRequest)
+    public async Task<IActionResult> UpdateCategory([FromRoute]int categoryId, [FromBody]EditCategoryCommand command)
     {
-        var category = await repository.GetByIdAsync(categoryId);
-
-        if (category is null) return NotFound("Category not found");
-
-        category.Name = updateCategoryRequest.name;
-        category.Description = updateCategoryRequest.description;
-
-        repository.Update(category);
-
-        if (await repository.SaveAllAsync())
-        {
-            return NoContent();
-        }
-
-        return BadRequest("Problem updating the category");
+        command.CategoryId = categoryId;
+        await mediator.Send(command);
+        return Ok();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddCategory([FromBody]AddCategoryRequest addCategoryRequest)
+    public async Task<IActionResult> AddCategory([FromBody]CreateCategoryCommand command)
     {
-        var category = new Category
-        {
-            Name = addCategoryRequest.name,
-            Description = addCategoryRequest.description
-        };
-
-        repository.Add(category);
-
-        if (await repository.SaveAllAsync())
-        {
-            return CreatedAtAction(nameof(GetCategory), new { categoryId = category.Id }, category);
-        }
-
-        return BadRequest("Problem creating category");
+        await mediator.Send(command);
+        return Ok();
     }
 }

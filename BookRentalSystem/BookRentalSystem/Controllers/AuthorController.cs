@@ -1,78 +1,42 @@
-﻿using BookRentalSystem.Models.Requests;
-using Core.Entities;
-using Core.Interfaces;
+﻿using BookRentalSystem.Author.Commands.CreateAuthorCommand;
+using BookRentalSystem.Author.Commands.DeleteAuthorCommand;
+using BookRentalSystem.Author.Commands.EditAuthorCommand;
+using BookRentalSystem.Author.Queries.GetAuthorByIdQuery;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
 
 [Route("api/v1/author")]
 [ApiController]
-public class AuthorController(IGenericRepository<Author> repository) : ControllerBase
+public class AuthorController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{authorId}")]
     public async Task<IActionResult> GetAuthor([FromRoute] int authorId)
     {
-        var author = await repository.GetByIdAsync(authorId);
-
-        if (author is null) return NotFound();
-
+        var author = await mediator.Send(new GetAuthorByIdQuery(authorId));
         return Ok(author);
     }
 
     [HttpDelete("{authorId}")]
     public async Task<IActionResult> DeleteAuthor([FromRoute] int authorId)
     {
-        var author = await repository.GetByIdAsync(authorId);
-
-        if (author is null) return NotFound("Author not found");
-
-        repository.Delete(author);
-
-        if (await repository.SaveAllAsync())
-        {
-            return NoContent();
-        }
-
-        return BadRequest("Problem deleting the author");
+        await mediator.Send(new DeleteAuthorCommand(authorId));
+        return Ok();
     }
 
     [HttpPut("{authorId}")]
-    public async Task<IActionResult> UpdateAuthor([FromRoute] int authorId, [FromBody] UpdateAuthorRequest updateAuthorRequest)
+    public async Task<IActionResult> UpdateAuthor([FromRoute] int authorId, [FromBody] EditAuthorCommand command)
     {
-        var author = await repository.GetByIdAsync(authorId);
-
-        if (author is null) return NotFound("Author not found");
-
-        repository.Update(author);
-
-        if (await repository.SaveAllAsync())
-        {
-            return NoContent();
-        }
-
-        return BadRequest("Problem updating the author");
+        command.AuthorId = authorId;
+        await mediator.Send(command);
+        return Ok();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAuthor([FromBody] AddAuthorRequest addAuthorRequest)
+    public async Task<IActionResult> AddAuthor([FromBody] CreateAuthorCommand command)
     {
-        var author = new Author
-        {
-            FirstName = addAuthorRequest.firstName,
-            LastName = addAuthorRequest.lastName,
-            Description = addAuthorRequest.description,
-            Nationality = addAuthorRequest.nationality,
-            DateOfBirth = addAuthorRequest.dateOfBirth,
-            DateOfDeath = addAuthorRequest.dateOfDeath
-        };
-
-        repository.Add(author);
-
-        if (await repository.SaveAllAsync())
-        {
-            return CreatedAtAction(nameof(GetAuthor), new { authorId = author.Id }, author);
-        }
-
-        return BadRequest("Problem creating book");
+        await mediator.Send(command);
+        return Ok();
     }
 }
