@@ -1,10 +1,11 @@
-﻿using BookRentalSystem.Exceptions;
+﻿using AutoMapper;
+using BookRentalSystem.Exceptions;
 using Core.Interfaces;
 using MediatR;
 
 namespace BookRentalSystem.Review.Commands.CreateReviewCommand;
 
-public class CreateReviewCommandHandler(IGenericRepository<Core.Entities.Review> repository) : IRequestHandler<CreateReviewCommand>
+public class CreateReviewCommandHandler(IGenericRepository<Core.Entities.Review> repository, IMapper mapper) : IRequestHandler<CreateReviewCommand>
 {
     public async Task Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
@@ -13,12 +14,7 @@ public class CreateReviewCommandHandler(IGenericRepository<Core.Entities.Review>
         if (!bookExists) 
             throw new NotFoundException("Book not found");
 
-        var review = new Core.Entities.Review
-        {
-            ReviewerName = request.ReviewerName,
-            Content = request.Content,
-            BookId = request.BookId
-        };
+        var review = mapper.Map<Core.Entities.Review>(request);
 
         repository.Add(review);
 

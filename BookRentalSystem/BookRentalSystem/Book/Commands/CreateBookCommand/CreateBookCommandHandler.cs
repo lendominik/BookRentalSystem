@@ -1,10 +1,11 @@
-﻿using BookRentalSystem.Exceptions;
+﻿using AutoMapper;
+using BookRentalSystem.Exceptions;
 using Core.Interfaces;
 using MediatR;
 
 namespace BookRentalSystem.Book.Commands.CreateBookCommand;
 
-public class CreateBookCommandHandler(IGenericRepository<Core.Entities.Book> repository) : IRequestHandler<CreateBookCommand>
+public class CreateBookCommandHandler(IGenericRepository<Core.Entities.Book> repository, IMapper mapper) : IRequestHandler<CreateBookCommand>
 {
     public async Task Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
@@ -15,14 +16,7 @@ public class CreateBookCommandHandler(IGenericRepository<Core.Entities.Book> rep
         if (!authorExsists || !publisherExsists || !categoryExsists)
             throw new NotFoundException("Author, Publisher or Category not found");
 
-        var book = new Core.Entities.Book
-        {
-            AuthorId = request.AuthorId,
-            CategoryId = request.CategoryId,
-            Description = request.Description,
-            Title = request.Title,
-            PublisherId = request.PublisherId
-        };
+        var book = mapper.Map<Core.Entities.Book>(request);
 
         repository.Add(book);
 

@@ -1,18 +1,15 @@
-﻿using BookRentalSystem.Exceptions;
+﻿using AutoMapper;
+using BookRentalSystem.Exceptions;
 using Core.Interfaces;
 using MediatR;
 
 namespace BookRentalSystem.Publisher.Commands.CreatePublisherCommand;
 
-public class CreatePublisherCommandHandler(IGenericRepository<Core.Entities.Publisher> repository) : IRequestHandler<CreatePublisherCommand>
+public class CreatePublisherCommandHandler(IGenericRepository<Core.Entities.Publisher> repository, IMapper mapper) : IRequestHandler<CreatePublisherCommand>
 {
     public async Task Handle(CreatePublisherCommand request, CancellationToken cancellationToken)
     {
-        var publisher = new Core.Entities.Publisher
-        {
-            Name = request.Name,
-            Description = request.Description
-        };
+        var publisher = mapper.Map<Core.Entities.Publisher>(request);
 
         repository.Add(publisher);
 

@@ -1,10 +1,11 @@
-﻿using BookRentalSystem.Exceptions;
+﻿using AutoMapper;
+using BookRentalSystem.Exceptions;
 using Core.Interfaces;
 using MediatR;
 
 namespace BookRentalSystem.Book.Queries.GetBookByIdQuery;
 
-public class GetBookByIdQueryHandler(IGenericRepository<Core.Entities.Book> repository) : IRequestHandler<GetBookByIdQuery, BookDto>
+public class GetBookByIdQueryHandler(IGenericRepository<Core.Entities.Book> repository, IMapper mapper) : IRequestHandler<GetBookByIdQuery, BookDto>
 {
     public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
@@ -13,13 +14,6 @@ public class GetBookByIdQueryHandler(IGenericRepository<Core.Entities.Book> repo
         if (book is null) 
             throw new NotFoundException("Book not found");
 
-        return new BookDto
-        {
-            AuthorId = book.AuthorId,
-            CategoryId = book.CategoryId,
-            Description = book.Description,
-            PublisherId = book.PublisherId,
-            Title = book.Title
-        };
+        return mapper.Map<BookDto>(book);
     }
 }
