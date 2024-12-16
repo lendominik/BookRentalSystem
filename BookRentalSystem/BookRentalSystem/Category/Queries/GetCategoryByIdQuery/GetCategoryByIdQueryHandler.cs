@@ -15,7 +15,6 @@ public class GetCategoryByIdQueryHandler(IGenericRepository<Core.Entities.Catego
 
         return new CategoryDto
         {
-            Books = category.Books,
             Description = category.Description,
             Name = category.Name
         };

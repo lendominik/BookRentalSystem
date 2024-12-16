@@ -15,14 +15,10 @@ public class GetBookByIdQueryHandler(IGenericRepository<Core.Entities.Book> repo
 
         return new BookDto
         {
-            Author = book.Author,
             AuthorId = book.AuthorId,
-            Category = book.Category,
             CategoryId = book.CategoryId,
             Description = book.Description,
-            Publisher = book.Publisher,
             PublisherId = book.PublisherId,
-            Reviews = book.Reviews,
             Title = book.Title
         };
     }

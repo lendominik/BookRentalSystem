@@ -15,7 +15,6 @@ public class GetPublisherByIdQueryHandler(IGenericRepository<Core.Entities.Publi
 
         return new PublisherDto
         {
-            Books = publisher.Books,
             Description = publisher.Description,
             Name = publisher.Name
         };
