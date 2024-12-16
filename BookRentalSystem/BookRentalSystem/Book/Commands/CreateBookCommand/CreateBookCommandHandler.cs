@@ -28,8 +28,6 @@ public class CreateBookCommandHandler(IGenericRepository<Core.Entities.Book> rep
         repository.Add(book);
 
         if (!await repository.SaveAllAsync())
-        {
             throw new BadRequestException("Problem creating book");
-        }
     }
 }

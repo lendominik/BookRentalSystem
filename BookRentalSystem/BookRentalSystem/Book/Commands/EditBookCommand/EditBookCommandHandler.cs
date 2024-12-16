@@ -14,20 +14,14 @@ public class EditBookCommandHandler(IGenericRepository<Core.Entities.Book> repos
             throw new NotFoundException("Book not found");
 
         if (!string.IsNullOrEmpty(request.Title))
-        {
             book.Title = request.Title;
-        }
 
         if (!string.IsNullOrEmpty(request.Description))
-        {
             book.Description = request.Description;
-        }
 
         repository.Update(book);
 
         if (!await repository.SaveAllAsync())
-        {
             throw new BadRequestException("Problem updating the book"); 
-        }
     }
 }

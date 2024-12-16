@@ -2,9 +2,6 @@
 using BookRentalSystem.Book.Commands.DeleteBookCommand;
 using BookRentalSystem.Book.Commands.EditBookCommand;
 using BookRentalSystem.Book.Queries.GetBookByIdQuery;
-using BookRentalSystem.Models.Requests;
-using Core.Entities;
-using Core.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -16,8 +16,6 @@ public class DeleteAutorCommandHandler(IGenericRepository<Core.Entities.Author> 
         repository.Delete(author);
 
         if (!await repository.SaveAllAsync())
-        {
             throw new BadRequestException("Problem deleting the author");
-        }
     }
 }

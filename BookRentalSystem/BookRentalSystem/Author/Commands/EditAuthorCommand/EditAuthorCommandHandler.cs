@@ -11,15 +11,11 @@ public class EditAuthorCommandHandler(GenericRepository<Core.Entities.Author> re
         var author = await repository.GetByIdAsync(request.AuthorId);
 
         if (author is null)
-        {
             throw new NotFoundException("Author not found");
-        }
 
         repository.Update(author);
 
         if (!await repository.SaveAllAsync())
-        {
             throw new BadRequestException("Problem updating the author");
-        }
     }
 }

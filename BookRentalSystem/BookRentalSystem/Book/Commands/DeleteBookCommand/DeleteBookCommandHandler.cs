@@ -16,8 +16,6 @@ public class DeleteBookCommandHandler(IGenericRepository<Core.Entities.Book> rep
         repository.Delete(book);
 
         if (!await repository.SaveAllAsync())
-        {
             throw new BadRequestException("Problem deleting the book");
-        }
     }
 }

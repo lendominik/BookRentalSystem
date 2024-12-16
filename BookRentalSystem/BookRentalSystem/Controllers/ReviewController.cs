@@ -1,13 +1,13 @@
-﻿using BookRentalSystem.Models.Requests;
-using Core.Entities;
-using Core.Interfaces;
+﻿using BookRentalSystem.Review.Commands.CreateReviewCommand;
+using BookRentalSystem.Review.Commands.DeleteReviewCommand;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
 
 [Route("api/v1/review")]
 [ApiController]
-public class ReviewController(IGenericRepository<Review> repository) : ControllerBase
+public class ReviewController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{reviewId}")]
     public async Task<IActionResult> GetReview([FromRoute]int reviewId)
@@ -22,40 +22,14 @@ public class ReviewController(IGenericRepository<Review> repository) : Controlle
     [HttpDelete("{reviewId}")]
     public async Task<IActionResult> DeleteReview([FromRoute]int reviewId)
     {
-        var review = await repository.GetByIdAsync(reviewId);
-
-        if (review is null) return NotFound("Review not found");
-
-        repository.Delete(review);
-
-        if (await repository.SaveAllAsync())
-        {
-            return NoContent();
-        }
-
-        return BadRequest("Problem deleting the review");
+        await mediator.Send(new DeleteReviewCommand(reviewId));
+        return Ok();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddReview([FromBody]AddReviewRequest addReviewRequest)
+    public async Task<IActionResult> AddReview([FromBody]CreateReviewCommand command)
     {
-        var bookExists = repository.Exists(addReviewRequest.bookId);
-        if (!bookExists) return NotFound("Book not found");
-
-        var review = new Review
-        {
-            ReviewerName = addReviewRequest.reviewerName,
-            Content = addReviewRequest.content,
-            BookId = addReviewRequest.bookId
-        };
-
-        repository.Add(review);
-
-        if (await repository.SaveAllAsync())
-        {
-            return CreatedAtAction(nameof(GetReview), new { reviewId = review.Id }, review);
-        }
-
-        return BadRequest("Problem creating review");
+        await mediator.Send(command);
+        return Ok();
     }
 }
