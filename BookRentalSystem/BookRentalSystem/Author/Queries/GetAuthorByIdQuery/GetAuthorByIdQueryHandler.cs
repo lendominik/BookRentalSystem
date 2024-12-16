@@ -2,7 +2,7 @@
 using Core.Interfaces;
 using MediatR;
 
-namespace BookRentalSystem.Author.Queries.GetAuthorById;
+namespace BookRentalSystem.Author.Queries.GetAuthorByIdQuery;
 
 public class GetAuthorByIdQueryHandler(IGenericRepository<Core.Entities.Author> repository) : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
 {

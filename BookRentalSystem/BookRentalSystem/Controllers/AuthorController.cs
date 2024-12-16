@@ -1,7 +1,7 @@
 ﻿using BookRentalSystem.Author.Commands.CreateAuthorCommand;
 using BookRentalSystem.Author.Commands.DeleteAuthorCommand;
 using BookRentalSystem.Author.Commands.EditAuthorCommand;
-using BookRentalSystem.Author.Queries.GetAuthorById;
+using BookRentalSystem.Author.Queries.GetAuthorByIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +28,7 @@ public class AuthorController(IMediator mediator) : ControllerBase
     [HttpPut("{authorId}")]
     public async Task<IActionResult> UpdateAuthor([FromRoute] int authorId, [FromBody] EditAuthorCommand command)
     {
+        command.AuthorId = authorId;
         await mediator.Send(command);
         return Ok();
     }

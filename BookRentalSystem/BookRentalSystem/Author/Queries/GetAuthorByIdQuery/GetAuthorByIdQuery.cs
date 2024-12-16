@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace BookRentalSystem.Author.Queries.GetAuthorById;
+namespace BookRentalSystem.Author.Queries.GetAuthorByIdQuery;
 
 public class GetAuthorByIdQuery : IRequest<AuthorDto>
 {
