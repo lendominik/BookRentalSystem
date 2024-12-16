@@ -1,8 +1,6 @@
 ﻿using BookRentalSystem.Exceptions;
-using BookRentalSystem.Models.Requests;
 using Core.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BookRentalSystem.Review.Commands.CreateReviewCommand;
 
