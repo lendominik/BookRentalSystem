@@ -41,7 +41,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
-    .WithOrigins("http://localhost:5000", "https://localhost:5001"));
+    .WithOrigins("http://localhost:4200", "https://localhost:4201"));
 
 app.MapControllers();
 
