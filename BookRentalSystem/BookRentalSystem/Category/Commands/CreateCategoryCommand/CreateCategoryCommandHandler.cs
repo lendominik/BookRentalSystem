@@ -5,7 +5,10 @@ using MediatR;
 
 namespace BookRentalSystem.Category.Commands.CreateCategoryCommand;
 
-public class CreateCategoryCommandHandler(IGenericRepository<Core.Entities.Category> repository, IMapper mapper) : IRequestHandler<CreateCategoryCommand>
+public class CreateCategoryCommandHandler(
+    IGenericRepository<Core.Entities.Category> repository,
+    IMapper mapper)
+    : IRequestHandler<CreateCategoryCommand>
 {
     public async Task Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {

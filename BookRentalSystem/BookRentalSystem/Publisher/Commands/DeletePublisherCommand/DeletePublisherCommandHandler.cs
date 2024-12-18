@@ -4,7 +4,9 @@ using MediatR;
 
 namespace BookRentalSystem.Publisher.Commands.DeletePublisherCommand;
 
-public class DeletePublisherCommandHandler(IGenericRepository<Core.Entities.Publisher> repository) : IRequestHandler<DeletePublisherCommand>
+public class DeletePublisherCommandHandler(
+    IGenericRepository<Core.Entities.Publisher> repository)
+    : IRequestHandler<DeletePublisherCommand>
 {
     public async Task Handle(DeletePublisherCommand request, CancellationToken cancellationToken)
     {

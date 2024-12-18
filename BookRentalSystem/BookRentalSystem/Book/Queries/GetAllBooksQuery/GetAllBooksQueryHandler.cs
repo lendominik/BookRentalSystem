@@ -4,7 +4,10 @@ using MediatR;
 
 namespace BookRentalSystem.Book.Queries.GetAllBooksQuery;
 
-public class GetAllBooksQueryHandler(IGenericRepository<Core.Entities.Book> repository, IMapper mapper) : IRequestHandler<GetAllBooksQuery, IEnumerable<BookDto>>
+public class GetAllBooksQueryHandler(
+    IGenericRepository<Core.Entities.Book> repository,
+    IMapper mapper)
+    : IRequestHandler<GetAllBooksQuery, IEnumerable<BookDto>>
 {
     public async Task<IEnumerable<BookDto>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
     {

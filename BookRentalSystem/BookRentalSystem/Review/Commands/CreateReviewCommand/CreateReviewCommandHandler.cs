@@ -5,7 +5,10 @@ using MediatR;
 
 namespace BookRentalSystem.Review.Commands.CreateReviewCommand;
 
-public class CreateReviewCommandHandler(IGenericRepository<Core.Entities.Review> repository, IMapper mapper) : IRequestHandler<CreateReviewCommand>
+public class CreateReviewCommandHandler(
+    IGenericRepository<Core.Entities.Review> repository,
+    IMapper mapper)
+    : IRequestHandler<CreateReviewCommand>
 {
     public async Task Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {

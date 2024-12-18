@@ -22,8 +22,8 @@ public class BookController(IMediator mediator) : ControllerBase
     [HttpGet("{bookId}")]
     public async Task<IActionResult> GetBook([FromRoute]int bookId)
     {
-        var book = await mediator.Send(new GetBookByIdQuery(bookId));
-        return Ok(book);
+        var books = await mediator.Send(new GetBookByIdQuery(bookId));
+        return Ok(books);
     }
 
     [HttpDelete("{bookId}")]

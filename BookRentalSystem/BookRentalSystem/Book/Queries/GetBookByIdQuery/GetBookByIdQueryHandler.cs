@@ -5,7 +5,10 @@ using MediatR;
 
 namespace BookRentalSystem.Book.Queries.GetBookByIdQuery;
 
-public class GetBookByIdQueryHandler(IGenericRepository<Core.Entities.Book> repository, IMapper mapper) : IRequestHandler<GetBookByIdQuery, BookDto>
+public class GetBookByIdQueryHandler(
+    IGenericRepository<Core.Entities.Book> repository,
+    IMapper mapper)
+    : IRequestHandler<GetBookByIdQuery, BookDto>
 {
     public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {

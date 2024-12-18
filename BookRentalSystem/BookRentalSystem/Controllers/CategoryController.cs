@@ -1,6 +1,7 @@
 ﻿using BookRentalSystem.Category.Commands.CreateCategoryCommand;
 using BookRentalSystem.Category.Commands.DeleteCategoryCommand;
 using BookRentalSystem.Category.Commands.EditCategoryCommand;
+using BookRentalSystem.Category.Queries.GetAllCategoriesQuery;
 using BookRentalSystem.Category.Queries.GetCategoryByIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,13 @@ namespace BookRentalSystem.Controllers;
 [ApiController]
 public class CategoryController(IMediator mediator) : ControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var categories = await mediator.Send(new GetAllCategoriesQuery());
+        return Ok(categories);
+    }
+
     [HttpGet("{categoryId}")]
     public async Task<IActionResult> GetCategory([FromRoute]int categoryId)
     {

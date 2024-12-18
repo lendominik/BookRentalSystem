@@ -4,7 +4,9 @@ using MediatR;
 
 namespace BookRentalSystem.Category.Commands.EditCategoryCommand;
 
-public class EditCategoryCommandHandler(IGenericRepository<Core.Entities.Category> repository) : IRequestHandler<EditCategoryCommand>
+public class EditCategoryCommandHandler(
+    IGenericRepository<Core.Entities.Category> repository)
+    : IRequestHandler<EditCategoryCommand>
 {
     public async Task Handle(EditCategoryCommand request, CancellationToken cancellationToken)
     {

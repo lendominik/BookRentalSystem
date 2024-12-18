@@ -1,6 +1,7 @@
 ﻿using BookRentalSystem.Author.Commands.CreateAuthorCommand;
 using BookRentalSystem.Author.Commands.DeleteAuthorCommand;
 using BookRentalSystem.Author.Commands.EditAuthorCommand;
+using BookRentalSystem.Author.Queries.GetAllAuthorsQuery;
 using BookRentalSystem.Author.Queries.GetAuthorByIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,13 @@ namespace BookRentalSystem.Controllers;
 [ApiController]
 public class AuthorController(IMediator mediator) : ControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var authors = await mediator.Send(new GetAllAuthorsQuery());
+        return Ok(authors);
+    }
+
     [HttpGet("{authorId}")]
     public async Task<IActionResult> GetAuthor([FromRoute] int authorId)
     {
