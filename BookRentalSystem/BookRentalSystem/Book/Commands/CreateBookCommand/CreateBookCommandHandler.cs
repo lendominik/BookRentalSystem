@@ -6,6 +6,7 @@ using MediatR;
 namespace BookRentalSystem.Book.Commands.CreateBookCommand;
 
 public class CreateBookCommandHandler(
+    IGenericRepository<Core.Entities.Book> repository,
     IUnitOfWork unitOfWork,
     IMapper mapper)
     : IRequestHandler<CreateBookCommand>
@@ -21,9 +22,9 @@ public class CreateBookCommandHandler(
 
         var book = mapper.Map<Core.Entities.Book>(request);
 
-        unitOfWork.Repository<Core.Entities.Book>().Add(book);
+        repository.Add(book);
 
-        if (await unitOfWork.Complete() <= 0)
+        if (!await repository.SaveAllAsync())
             throw new BadRequestException("Problem creating book");
     }
 }
