@@ -1,6 +1,7 @@
 ﻿using BookRentalSystem.Book.Commands.CreateBookCommand;
 using BookRentalSystem.Book.Commands.DeleteBookCommand;
 using BookRentalSystem.Book.Commands.EditBookCommand;
+using BookRentalSystem.Book.Queries.GetAllBooksQuery;
 using BookRentalSystem.Book.Queries.GetBookByIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,13 @@ namespace BookRentalSystem.Controllers;
 [ApiController]
 public class BookController(IMediator mediator) : ControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var book = await mediator.Send(new GetAllBooksQuery());
+        return Ok(book);
+    }
+
     [HttpGet("{bookId}")]
     public async Task<IActionResult> GetBook([FromRoute]int bookId)
     {
