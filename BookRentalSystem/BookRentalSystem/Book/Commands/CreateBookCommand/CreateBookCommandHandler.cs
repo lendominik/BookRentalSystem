@@ -23,7 +23,7 @@ public class CreateBookCommandHandler(
 
         unitOfWork.Repository<Core.Entities.Book>().Add(book);
 
-        if (!await unitOfWork.Repository<Core.Entities.Author>().SaveAllAsync())
+        if (await unitOfWork.Complete() <= 0)
             throw new BadRequestException("Problem creating book");
     }
 }
