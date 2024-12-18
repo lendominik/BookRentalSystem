@@ -17,6 +17,11 @@ public class GenericRepository<T>(AppDbContext dbContext) : IGenericRepository<T
         return dbContext.Set<T>().Any(x => x.Id == id);
     }
 
+    public async Task<IEnumerable<T>> GetAll()
+    {
+        return await dbContext.Set<T>().ToListAsync();
+    } 
+
     public async Task<T?> GetByIdAsync(int id)
     {
         return await dbContext.Set<T>().FindAsync(id);

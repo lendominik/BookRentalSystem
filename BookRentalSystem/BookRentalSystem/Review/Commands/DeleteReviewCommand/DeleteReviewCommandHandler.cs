@@ -4,7 +4,9 @@ using MediatR;
 
 namespace BookRentalSystem.Review.Commands.DeleteReviewCommand;
 
-public class DeleteReviewCommandHandler(IGenericRepository<Core.Entities.Review> repository) : IRequestHandler<DeleteReviewCommand>
+public class DeleteReviewCommandHandler(
+    IGenericRepository<Core.Entities.Review> repository)
+    : IRequestHandler<DeleteReviewCommand>
 {
     public async Task Handle(DeleteReviewCommand request, CancellationToken cancellationToken)
     {
