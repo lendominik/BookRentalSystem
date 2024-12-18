@@ -42,4 +42,19 @@ public class GenericRepository<T>(AppDbContext dbContext) : IGenericRepository<T
         dbContext.Set<T>().Attach(entity);
         dbContext.Entry(entity).State = EntityState.Modified;
     }
+
+    public async Task<T?> GetEntityWithSpec(ISpecification<T> spec)
+    {
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
+    }
+
+    public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
+    {
+        return await ApplySpecification(spec).ToListAsync();
+    }
+
+    private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+    {
+        return SpecificationEvaluator<T>.GetQuery(dbContext.Set<T>().AsQueryable(), spec);
+    }
 }
