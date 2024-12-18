@@ -13,7 +13,8 @@ public interface IGenericRepository<T> where T : BaseEntity
 
     void Add(T entity);
     void Update(T entity);
-    public bool Exists(int id);
+    bool Exists(int id);
     void Delete(T entity);
     Task<bool> SaveAllAsync();
+    Task<IEnumerable<T>> GetAll();
 }

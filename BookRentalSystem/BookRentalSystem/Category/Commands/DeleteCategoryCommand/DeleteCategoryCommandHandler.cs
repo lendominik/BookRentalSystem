@@ -4,7 +4,9 @@ using MediatR;
 
 namespace BookRentalSystem.Category.Commands.DeleteCategoryCommand;
 
-public class DeleteCategoryCommandHandler(IGenericRepository<Core.Entities.Category> repository) : IRequestHandler<DeleteCategoryCommand>
+public class DeleteCategoryCommandHandler(
+    IGenericRepository<Core.Entities.Category> repository)
+    : IRequestHandler<DeleteCategoryCommand>
 {
     public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {

@@ -28,6 +28,10 @@ public class GenericRepository<T>(AppDbContext dbContext) : IGenericRepository<T
     {
         return await dbContext.SaveChangesAsync() > 0;
     }
+    public async Task<IEnumerable<T>> GetAll()
+    {
+        return await dbContext.Set<T>().ToListAsync();
+    } 
     public async Task<T?> GetByIdAsync(int id)
     {
         return await dbContext.Set<T>().FindAsync(id);
