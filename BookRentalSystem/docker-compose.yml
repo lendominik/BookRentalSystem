@@ -19,3 +19,13 @@ services:
       MSSQL_SA_PASSWORD: "Password@1"
     ports:
       - "1433:1433"
+
+  bookrentalsystem-frontend:
+    image: ${DOCKER_REGISTRY-}client
+    container_name: bookrentalsystem-frontend
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    
