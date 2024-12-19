@@ -4,7 +4,9 @@ using MediatR;
 
 namespace BookRentalSystem.Publisher.Commands.EditPublisherCommand;
 
-public class EditPublisherCommandHandler(IGenericRepository<Core.Entities.Publisher> repository) : IRequestHandler<EditPublisherCommand>
+public class EditPublisherCommandHandler(
+    IGenericRepository<Core.Entities.Publisher> repository)
+    : IRequestHandler<EditPublisherCommand>
 {
     public async Task Handle(EditPublisherCommand request, CancellationToken cancellationToken)
     {

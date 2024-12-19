@@ -1,6 +1,4 @@
-﻿using Core.Entities;
-
-namespace BookRentalSystem.Book;
+﻿namespace BookRentalSystem.Book;
 
 public class BookDto
 {

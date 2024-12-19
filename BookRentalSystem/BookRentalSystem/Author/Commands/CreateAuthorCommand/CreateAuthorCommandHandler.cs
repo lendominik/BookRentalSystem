@@ -5,7 +5,10 @@ using MediatR;
 
 namespace BookRentalSystem.Author.Commands.CreateAuthorCommand;
 
-public class CreateAuthorCommandHandler(IGenericRepository<Core.Entities.Author> repository, IMapper mapper) : IRequestHandler<CreateAuthorCommand>
+public class CreateAuthorCommandHandler(
+    IGenericRepository<Core.Entities.Author> repository,
+    IMapper mapper)
+    : IRequestHandler<CreateAuthorCommand>
 {
     public async Task Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
     {

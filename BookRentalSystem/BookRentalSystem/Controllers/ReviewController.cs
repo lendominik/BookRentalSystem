@@ -1,5 +1,6 @@
 ﻿using BookRentalSystem.Review.Commands.CreateReviewCommand;
 using BookRentalSystem.Review.Commands.DeleteReviewCommand;
+using BookRentalSystem.Review.Queries.GetAllReviewsQuery;
 using BookRentalSystem.Review.Queries.GetReviewByIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,13 @@ namespace BookRentalSystem.Controllers;
 [ApiController]
 public class ReviewController(IMediator mediator) : ControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var reviews = await mediator.Send(new GetAllReviewsQuery());
+        return Ok(reviews);
+    }
+
     [HttpGet("{reviewId}")]
     public async Task<IActionResult> GetReview([FromRoute]int reviewId)
     {
