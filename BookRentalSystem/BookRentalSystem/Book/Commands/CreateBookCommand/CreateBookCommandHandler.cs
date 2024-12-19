@@ -5,13 +5,17 @@ using MediatR;
 
 namespace BookRentalSystem.Book.Commands.CreateBookCommand;
 
-public class CreateBookCommandHandler(IGenericRepository<Core.Entities.Book> repository, IMapper mapper) : IRequestHandler<CreateBookCommand>
+public class CreateBookCommandHandler(
+    IGenericRepository<Core.Entities.Book> repository,
+    IUnitOfWork unitOfWork,
+    IMapper mapper)
+    : IRequestHandler<CreateBookCommand>
 {
     public async Task Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
-        var authorExsists = repository.Exists(request.AuthorId);
-        var publisherExsists = repository.Exists(request.PublisherId);
-        var categoryExsists = repository.Exists(request.CategoryId);
+        var authorExsists = unitOfWork.Repository<Core.Entities.Author>().Exists(request.AuthorId);
+        var publisherExsists = unitOfWork.Repository<Core.Entities.Publisher>().Exists(request.PublisherId);
+        var categoryExsists = unitOfWork.Repository<Core.Entities.Category>().Exists(request.CategoryId);
 
         if (!authorExsists || !publisherExsists || !categoryExsists)
             throw new NotFoundException("Author, Publisher or Category not found");

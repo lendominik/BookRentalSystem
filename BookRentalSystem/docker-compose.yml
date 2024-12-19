@@ -19,7 +19,7 @@ services:
       MSSQL_SA_PASSWORD: "Password@1"
     ports:
       - "1433:1433"
-
+      
   frontend:
     image: ${DOCKER_REGISTRY-}frontend
     container_name: bookrentalsystemfrontend
@@ -29,3 +29,8 @@ services:
     ports:
       - "8080:80"
       - "8443:443"
+    volumes:
+      - bookrentalsystem-data:/var/opt/mssql
+
+volumes:
+  bookrentalsystem-data:
