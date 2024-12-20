@@ -1,4 +1,4 @@
-FROM node:alpine As builder
+FROM node:22.12.0 As builder
 
 WORKDIR /usr/src/app
 
@@ -10,6 +10,6 @@ COPY . .
 
 RUN npm run build --prod
 
-FROM nginx:alpine
+FROM nginx:1.27.3
 
 COPY --from=builder /usr/src/app/dist/client/browser/* /usr/share/nginx/html/
