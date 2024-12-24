@@ -5,8 +5,8 @@ services:
     image: ${DOCKER_REGISTRY-}bookrentalsystem
     container_name: bookrentalsystemapi
     build:
-      context: BookRentalSystem
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: BookRentalSystem/Dockerfile
     ports:
       - "5000:5000"
       - "5001:5001"
@@ -19,7 +19,9 @@ services:
       MSSQL_SA_PASSWORD: "Password@1"
     ports:
       - "1433:1433"
-      
+    volumes:
+      - bookrentalsystem-data:/var/opt/mssql
+
   frontend:
     image: ${DOCKER_REGISTRY-}frontend
     container_name: bookrentalsystemfrontend
