@@ -8,6 +8,8 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
+    depends_on:
+      - bookrentalsystem-db
 
   bookrentalsystem-db:
     image: mcr.microsoft.com/mssql/server:2022-CU16-ubuntu-22.04
