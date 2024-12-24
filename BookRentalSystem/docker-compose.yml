@@ -5,8 +5,8 @@ services:
     image: ${DOCKER_REGISTRY-}bookrentalsystem
     container_name: bookrentalsystemapi
     build:
-      context: .
-      dockerfile: BookRentalSystem/Dockerfile
+      context: BookRentalSystem
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
       - "5001:5001"
