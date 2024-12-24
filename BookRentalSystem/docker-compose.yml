@@ -1,12 +1,10 @@
-version: '3.4'
-
 services:
   bookrentalsystem:
     image: ${DOCKER_REGISTRY-}bookrentalsystem
     container_name: bookrentalsystemapi
     build:
-      context: BookRentalSystem
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: BookRentalSystem/Dockerfile
     ports:
       - "5000:5000"
       - "5001:5001"
