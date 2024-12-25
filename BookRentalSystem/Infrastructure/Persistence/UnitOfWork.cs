@@ -1,5 +1,5 @@
 ﻿using Core.Entities;
-using Core.Interfaces;
+using Core.Contracts;
 using Infrastructure.Services;
 using System.Collections;
 

@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using BookRentalSystem.Exceptions;
-using Core.Interfaces;
+using Core.Contracts;
 using MediatR;
 
 namespace BookRentalSystem.Author.Queries.GetAuthorByIdQuery;
 
-public class GetAuthorByIdQueryHandler(IGenericRepository<Core.Entities.Author> repository, IMapper mapper) : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
+public class GetAuthorByIdQueryHandler(
+    IGenericRepository<Core.Entities.Author> repository,
+    IMapper mapper)
+    : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
 {
     public async Task<AuthorDto> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {

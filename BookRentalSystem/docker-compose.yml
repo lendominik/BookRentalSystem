@@ -1,8 +1,6 @@
-version: '3.4'
-
 services:
   bookrentalsystem:
-    image: ${DOCKER_REGISTRY-}bookrentalsystem
+    image: bookrentalsystemapi
     container_name: bookrentalsystemapi
     build:
       context: .
@@ -10,6 +8,10 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
+    depends_on:
+      - bookrentalsystem-db
+    networks:
+      - backend-network
 
   bookrentalsystem-db:
     image: mcr.microsoft.com/mssql/server:2022-CU16-ubuntu-22.04
@@ -31,6 +33,11 @@ services:
     
     volumes:
       - bookrentalsystem-data:/var/opt/mssql
+    networks:
+      - backend-network
 
 volumes:
   bookrentalsystem-data:
+
+networks:
+  backend-network:    

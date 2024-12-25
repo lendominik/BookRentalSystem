@@ -1,5 +1,5 @@
 ﻿using BookRentalSystem.Exceptions;
-using Core.Interfaces;
+using Core.Contracts;
 using MediatR;
 
 namespace BookRentalSystem.Category.Commands.EditCategoryCommand;
