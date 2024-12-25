@@ -1,5 +1,5 @@
 ﻿using Core.Entities;
-using Core.Interfaces;
+using Core.Contracts;
 
 namespace Infrastructure.Persistence;
 

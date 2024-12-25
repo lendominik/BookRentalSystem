@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Core.Interfaces;
+using Core.Contracts;
 using MediatR;
 
 namespace BookRentalSystem.Book.Queries.GetAllBooksQuery;
