@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using BookRentalSystem.Publisher;
-using Core.Interfaces;
+using Core.Contracts;
 using MediatR;
 
 namespace BookRentalSystem.Review.Queries.GetAllReviewsQuery;

@@ -1,4 +1,4 @@
-﻿using Core.Interfaces;
+﻿using Core.Contracts;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
