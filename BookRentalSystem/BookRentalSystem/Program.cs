@@ -31,12 +31,15 @@ if (app.Environment.IsDevelopment())
 {
     app.ApplyMigrations();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseExceptionHandler("/error");
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
