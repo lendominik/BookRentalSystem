@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BookRentalSystem.Exceptions;
-using Core.Interfaces;
+using Core.Contracts;
 using MediatR;
 
 namespace BookRentalSystem.Publisher.Commands.CreatePublisherCommand;
