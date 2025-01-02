@@ -20,3 +20,4 @@ _ReSharper.*
 .vscode/
 test-results/
 coverage/
+/BookRentalSystem/Client/ssl

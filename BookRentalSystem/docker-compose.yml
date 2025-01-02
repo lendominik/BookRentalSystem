@@ -26,8 +26,20 @@ services:
     networks:
       - backend-network
 
+  bookrentalsystem-frontend:
+    image: bookrentalsystemfrontend
+    container_name: bookrentalsystemfrontend
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - frontend-network
+    
 volumes:
   bookrentalsystem-data:
 
 networks:
   backend-network:    
+  frontend-network:  
