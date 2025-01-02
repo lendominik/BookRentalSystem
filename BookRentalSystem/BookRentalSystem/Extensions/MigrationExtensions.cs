@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Extensions;
+namespace BookRentalSystem.Extensions;
 
 public static class MigrationExtensions
 {

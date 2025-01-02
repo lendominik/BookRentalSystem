@@ -2,7 +2,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace Application.Middlewares;
+namespace BookRentalSystem.Middlewares;
 
 public class ExceptionHandler : IExceptionHandler
 {
