@@ -3,13 +3,15 @@ using Application.Category.Commands.DeleteCategoryCommand;
 using Application.Category.Commands.EditCategoryCommand;
 using Application.Category.Queries.GetAllCategoriesQuery;
 using Application.Category.Queries.GetCategoryByIdQuery;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
 
 public class CategoryController(
-    IMediator mediator)
+    IMediator mediator,
+    IMapper mapper)
     : Controller
 {
     [HttpGet]
@@ -20,12 +22,19 @@ public class CategoryController(
         return View(carWorkshops);
     }
 
+    [HttpGet]
+    [Route("Category/Create")]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
     [HttpPost]
-    [Route("Category")]
+    [Route("Category/Create")]
     public async Task<IActionResult> Create(CreateCategoryCommand command)
     {
         await mediator.Send(command);
-        return Ok();
+        return RedirectToAction(nameof(Index));
     }
 
     [Route("Category/{categoryId}/Details")]
@@ -36,17 +45,25 @@ public class CategoryController(
     }
 
     [Route("Category/{categoryId}/Edit")]
+    public async Task<IActionResult> Edit(int categoryId)
+    {
+        var categoryDto = await mediator.Send(new GetCategoryByIdQuery(categoryId));
+        var model = mapper.Map<EditCategoryCommand>(categoryDto);
+        return View(model);
+    }
+
+    [HttpPost]
+    [Route("Category/{categoryId}/Edit")]
     public async Task<IActionResult> Edit(int categoryId, EditCategoryCommand command)
     {
-        command.CategoryId = categoryId;
         await mediator.Send(command);
-        return Ok();
+        return RedirectToAction(nameof(Index));
     }
 
     [Route("Category/{categoryId}/Delete")]
     public async Task<IActionResult> Delete(int categoryId)
     {
         await mediator.Send(new DeleteCategoryCommand(categoryId));
-        return Ok();
+        return RedirectToAction(nameof(Index));
     }
 }
