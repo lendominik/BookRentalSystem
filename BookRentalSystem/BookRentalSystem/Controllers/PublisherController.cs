@@ -54,6 +54,7 @@ public class PublisherController(
     public async Task<IActionResult> Edit(int publisherId, EditPublisherCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("info", "Publisher updated successfully.");
         return RedirectToAction(nameof(Index));
     }
 
@@ -61,6 +62,7 @@ public class PublisherController(
     public async Task<IActionResult> Delete(int publisherId)
     {
         await mediator.Send(new DeletePublisherCommand(publisherId));
+        this.SetNotification("error", "Publisher deleted successfully.");
         return RedirectToAction(nameof(Index));
     }
 }

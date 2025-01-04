@@ -54,6 +54,7 @@ public class AuthorController(
     public async Task<IActionResult> Edit(int authorId, EditAuthorCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("info", "Author updated successfully.");
         return RedirectToAction(nameof(Index));
     }
 
@@ -61,6 +62,7 @@ public class AuthorController(
     public async Task<IActionResult> Delete(int authorId)
     {
         await mediator.Send(new DeleteAuthorCommand(authorId));
+        this.SetNotification("error", "Author deleted successfully.");
         return RedirectToAction(nameof(Index));
     }
 }

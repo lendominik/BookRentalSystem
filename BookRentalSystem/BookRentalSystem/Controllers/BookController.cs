@@ -71,6 +71,7 @@ public class BookController(
     public async Task<IActionResult> Edit(int bookId, EditBookCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("info", "Book updated successfully.");
         return RedirectToAction(nameof(Index));
     }
 
@@ -78,6 +79,7 @@ public class BookController(
     public async Task<IActionResult> Delete(int bookId)
     {
         await mediator.Send(new DeleteBookCommand(bookId));
+        this.SetNotification("error", "Book deleted successfully.");
         return RedirectToAction(nameof(Index));
     }
 }

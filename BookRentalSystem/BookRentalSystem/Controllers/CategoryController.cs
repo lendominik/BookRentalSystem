@@ -54,6 +54,7 @@ public class CategoryController(
     public async Task<IActionResult> Edit(int categoryId, EditCategoryCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("info", "Category updated successfully.");
         return RedirectToAction(nameof(Index));
     }
 
@@ -61,6 +62,7 @@ public class CategoryController(
     public async Task<IActionResult> Delete(int categoryId)
     {
         await mediator.Send(new DeleteCategoryCommand(categoryId));
+        this.SetNotification("error", "Category deleted successfully.");
         return RedirectToAction(nameof(Index));
     }
 }

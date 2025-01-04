@@ -35,6 +35,7 @@ public class ReviewController(
     public async Task<IActionResult> Details(int reviewId)
     {
         var reviewDto = await mediator.Send(new GetReviewByIdQuery(reviewId));
+        this.SetNotification("info", "Review updated successfully.");
         return View(reviewDto);
     }
 
@@ -42,6 +43,7 @@ public class ReviewController(
     public async Task<IActionResult> Delete(int reviewId)
     {
         await mediator.Send(new DeleteReviewCommand(reviewId));
+        this.SetNotification("error", "Review deleted successfully.");
         return RedirectToAction(nameof(Index));
     }
 }
