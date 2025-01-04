@@ -14,37 +14,32 @@ public class PublisherController(
     IMapper mapper)
     : Controller
 {
-    [HttpGet]
-    [Route("Publisher")]
     public async Task<IActionResult> Index()
     {
         var publishers = await mediator.Send(new GetAllPublishersQuery());
         return View(publishers);
     }
 
-    [HttpGet]
-    [Route("Publisher/Create")]
     public IActionResult Create()
     {
         return View();
     }
 
     [HttpPost]
-    [Route("Publisher/Create")]
     public async Task<IActionResult> Create(CreatePublisherCommand command)
     {
         await mediator.Send(command);
         return RedirectToAction(nameof(Index));
     }
 
-    [Route("Publisher/{publisherId}/Details")]
+    [Route("Publisher/Details/{publisherId}")]
     public async Task<IActionResult> Details(int publisherId)
     {
         var publisherDto = await mediator.Send(new GetPublisherByIdQuery(publisherId));
         return View(publisherDto);
     }
 
-    [Route("Publisher/{publisherId}/Edit")]
+    [Route("Publisher/Edit/{publisherId}")]
     public async Task<IActionResult> Edit(int publisherId)
     {
         var publisherDto = await mediator.Send(new GetPublisherByIdQuery(publisherId));
@@ -53,14 +48,14 @@ public class PublisherController(
     }
 
     [HttpPost]
-    [Route("Publisher/{publisherId}/Edit")]
+    [Route("Publisher/Edit/{publisherId}")]
     public async Task<IActionResult> Edit(int publisherId, EditPublisherCommand command)
     {
         await mediator.Send(command);
         return RedirectToAction(nameof(Index));
     }
 
-    [Route("Publisher/{publisherId}/Delete")]
+    [Route("Publisher/Delete/{publisherId}")]
     public async Task<IActionResult> Delete(int publisherId)
     {
         await mediator.Send(new DeletePublisherCommand(publisherId));

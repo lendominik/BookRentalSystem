@@ -14,37 +14,32 @@ public class BookController(
     IMapper mapper)
     : Controller
 {
-    [HttpGet]
-    [Route("Book")]
     public async Task<IActionResult> Index()
     {
         var books = await mediator.Send(new GetAllBooksQuery());
         return View(books);
     }
 
-    [HttpGet]
-    [Route("Book/Create")]
     public IActionResult Create()
     {
         return View();
     }
 
     [HttpPost]
-    [Route("Book/Create")]
     public async Task<IActionResult> Create(CreateBookCommand command)
     {
         await mediator.Send(command);
         return RedirectToAction(nameof(Index));
     }
 
-    [Route("Book/{bookId}/Details")]
+    [Route("Book/Details/{bookId}")]
     public async Task<IActionResult> Details(int bookId)
     {
         var bookDto = await mediator.Send(new GetBookByIdQuery(bookId));
         return View(bookDto);
     }
 
-    [Route("Book/{bookId}/Edit")]
+    [Route("Book/Edit/{bookId}")]
     public async Task<IActionResult> Edit(int bookId)
     {
         var bookDto = await mediator.Send(new GetBookByIdQuery(bookId));
@@ -53,14 +48,14 @@ public class BookController(
     }
 
     [HttpPost]
-    [Route("Book/{bookId}/Edit")]
+    [Route("Book/Edit/{bookId}")]
     public async Task<IActionResult> Edit(int bookId, EditBookCommand command)
     {
         await mediator.Send(command);
         return RedirectToAction(nameof(Index));
     }
 
-    [Route("Book/{bookId}/Delete")]
+    [Route("Book/Delete/{bookId}")]
     public async Task<IActionResult> Delete(int bookId)
     {
         await mediator.Send(new DeleteBookCommand(bookId));

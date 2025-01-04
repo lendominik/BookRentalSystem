@@ -11,37 +11,32 @@ public class ReviewController(
     IMediator mediator)
     : Controller
 {
-    [HttpGet]
-    [Route("Review")]
     public async Task<IActionResult> Index()
     {
         var reviews = await mediator.Send(new GetAllReviewsQuery());
         return View(reviews);
     }
 
-    [HttpGet]
-    [Route("Review/Create")]
     public IActionResult Create()
     {
         return View();
     }
 
     [HttpPost]
-    [Route("Review/Create")]
     public async Task<IActionResult> Create(CreateReviewCommand command)
     {
         await mediator.Send(command);
         return RedirectToAction(nameof(Index));
     }
 
-    [Route("Review/{reviewId}/Details")]
+    [Route("Review/Details/{reviewId}")]
     public async Task<IActionResult> Details(int reviewId)
     {
         var reviewDto = await mediator.Send(new GetReviewByIdQuery(reviewId));
         return View(reviewDto);
     }
 
-    [Route("Review/{reviewId}/Delete")]
+    [Route("Review/Delete/{reviewId}")]
     public async Task<IActionResult> Delete(int reviewId)
     {
         await mediator.Send(new DeleteReviewCommand(reviewId));
