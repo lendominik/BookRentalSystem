@@ -18,8 +18,8 @@ public class CategoryController(
     [Route("Category")]
     public async Task<IActionResult> Index()
     {
-        var carWorkshops = await mediator.Send(new GetAllCategoriesQuery());
-        return View(carWorkshops);
+        var categories = await mediator.Send(new GetAllCategoriesQuery());
+        return View(categories);
     }
 
     [HttpGet]
