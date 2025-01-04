@@ -4,6 +4,7 @@ using Application.Author.Commands.EditAuthorCommand;
 using Application.Author.Queries.GetAllAuthorsQuery;
 using Application.Author.Queries.GetAuthorByIdQuery;
 using AutoMapper;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,7 @@ public class AuthorController(
     public async Task<IActionResult> Create(CreateAuthorCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("success", "Author created successfully.");
         return RedirectToAction(nameof(Index));
     }
 

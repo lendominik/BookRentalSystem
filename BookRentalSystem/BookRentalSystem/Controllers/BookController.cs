@@ -7,6 +7,7 @@ using Application.Book.Queries.GetBookByIdQuery;
 using Application.Category.Queries.GetAllCategoriesQuery;
 using Application.Publisher.Queries.GetAllPublishersQuery;
 using AutoMapper;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -46,6 +47,7 @@ public class BookController(
     public async Task<IActionResult> Create(CreateBookCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("success", "Book created successfully.");
         return RedirectToAction(nameof(Index));
     }
 

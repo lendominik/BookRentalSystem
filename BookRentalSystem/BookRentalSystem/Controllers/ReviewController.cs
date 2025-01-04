@@ -2,6 +2,7 @@
 using Application.Review.Commands.DeleteReviewCommand;
 using Application.Review.Queries.GetAllReviewsQuery;
 using Application.Review.Queries.GetReviewByIdQuery;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,7 @@ public class ReviewController(
     public async Task<IActionResult> Create(CreateReviewCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("success", "Review created successfully.");
         return RedirectToAction(nameof(Index));
     }
 

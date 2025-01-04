@@ -4,6 +4,7 @@ using Application.Category.Commands.EditCategoryCommand;
 using Application.Category.Queries.GetAllCategoriesQuery;
 using Application.Category.Queries.GetCategoryByIdQuery;
 using AutoMapper;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,7 @@ public class CategoryController(
     public async Task<IActionResult> Create(CreateCategoryCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("success", "Category created successfully.");
         return RedirectToAction(nameof(Index));
     }
 

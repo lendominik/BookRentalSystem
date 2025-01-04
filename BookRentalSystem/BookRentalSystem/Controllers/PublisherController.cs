@@ -4,6 +4,7 @@ using Application.Publisher.Commands.EditPublisherCommand;
 using Application.Publisher.Queries.GetAllPublishersQuery;
 using Application.Publisher.Queries.GetPublisherByIdQuery;
 using AutoMapper;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,7 @@ public class PublisherController(
     public async Task<IActionResult> Create(CreatePublisherCommand command)
     {
         await mediator.Send(command);
+        this.SetNotification("success", "Publisher created successfully.");
         return RedirectToAction(nameof(Index));
     }
 
