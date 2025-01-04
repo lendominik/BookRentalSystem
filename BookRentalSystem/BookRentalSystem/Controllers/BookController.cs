@@ -18,8 +18,8 @@ public class BookController(
     [Route("Book")]
     public async Task<IActionResult> Index()
     {
-        var carWorkshops = await mediator.Send(new GetAllBooksQuery());
-        return View(carWorkshops);
+        var books = await mediator.Send(new GetAllBooksQuery());
+        return View(books);
     }
 
     [HttpGet]
