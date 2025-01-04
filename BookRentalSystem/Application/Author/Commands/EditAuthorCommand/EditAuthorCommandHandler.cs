@@ -15,6 +15,13 @@ public class EditAuthorCommandHandler(
         if (author is null)
             throw new NotFoundException("Author not found");
 
+        author.Description = request.Description;
+        author.DateOfDeath = request.DateOfDeath;
+        author.DateOfBirth = request.DateOfBirth;
+        author.FirstName = request.FirstName;
+        author.LastName = request.LastName;
+        author.Nationality = request.Nationality;
+
         repository.Update(author);
 
         if (!await repository.SaveAllAsync())

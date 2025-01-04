@@ -15,11 +15,8 @@ public class EditBookCommandHandler(
         if (book is null)
             throw new NotFoundException("Book not found");
 
-        if (!string.IsNullOrEmpty(request.Title))
-            book.Title = request.Title;
-
-        if (!string.IsNullOrEmpty(request.Description))
-            book.Description = request.Description;
+        book.Title = request.Title;
+        book.Description = request.Description;
 
         repository.Update(book);
 
