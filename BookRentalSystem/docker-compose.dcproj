@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>7468cecb-94de-416f-a18f-e99e8c3a0f5a</ProjectGuid>
+    <ProjectGuid>c2b9462c-1d33-48fc-8ff4-bdced300610d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>bookrentalsystem</DockerServiceName>

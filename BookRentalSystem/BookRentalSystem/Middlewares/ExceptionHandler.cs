@@ -1,4 +1,4 @@
-﻿using BookRentalSystem.Exceptions;
+﻿using Application.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 
