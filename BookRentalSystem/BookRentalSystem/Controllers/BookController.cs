@@ -1,11 +1,15 @@
-﻿using Application.Book.Commands.CreateBookCommand;
+﻿using Application.Author.Queries.GetAllAuthorsQuery;
+using Application.Book.Commands.CreateBookCommand;
 using Application.Book.Commands.DeleteBookCommand;
 using Application.Book.Commands.EditBookCommand;
 using Application.Book.Queries.GetAllBooksQuery;
 using Application.Book.Queries.GetBookByIdQuery;
+using Application.Category.Queries.GetAllCategoriesQuery;
+using Application.Publisher.Queries.GetAllPublishersQuery;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookRentalSystem.Controllers;
 
@@ -20,9 +24,22 @@ public class BookController(
         return View(books);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        var command = new CreateBookCommand
+        {
+            Categories = (await mediator.Send(new GetAllCategoriesQuery()))
+            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
+            .ToList(),
+            Authors = (await mediator.Send(new GetAllAuthorsQuery()))
+            .Select(x => new SelectListItem { Text = $"{x.FirstName} {x.LastName}", Value = x.Id.ToString() })
+            .ToList(),
+            Publishers = (await mediator.Send(new GetAllPublishersQuery()))
+            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
+            .ToList()
+        };
+
+        return View(command);
     }
 
     [HttpPost]
