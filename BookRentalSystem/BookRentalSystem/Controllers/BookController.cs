@@ -46,6 +46,11 @@ public class BookController(
     [HttpPost]
     public async Task<IActionResult> Create(CreateBookCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("success", "Book created successfully.");
         return RedirectToAction(nameof(Index));
@@ -83,6 +88,11 @@ public class BookController(
     [Route("Book/Edit/{id}")]
     public async Task<IActionResult> Edit(int bookId, EditBookCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("info", "Book updated successfully.");
         return RedirectToAction(nameof(Index));

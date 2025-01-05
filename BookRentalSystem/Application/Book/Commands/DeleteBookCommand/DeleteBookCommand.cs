@@ -2,12 +2,4 @@
 
 namespace Application.Book.Commands.DeleteBookCommand;
 
-public class DeleteBookCommand : IRequest
-{
-    public int BookId { get; set; }
-
-    public DeleteBookCommand(int bookId)
-    {
-        BookId = bookId;
-    }
-}
+public record DeleteBookCommand(int BookId) : IRequest;

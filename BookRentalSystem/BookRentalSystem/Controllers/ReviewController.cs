@@ -26,6 +26,11 @@ public class ReviewController(
     [HttpPost]
     public async Task<IActionResult> Create(CreateReviewCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("success", "Review created successfully.");
         return RedirectToAction(nameof(Index));

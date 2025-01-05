@@ -29,6 +29,11 @@ public class CategoryController(
     [HttpPost]
     public async Task<IActionResult> Create(CreateCategoryCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("success", "Category created successfully.");
         return RedirectToAction(nameof(Index));
@@ -53,6 +58,11 @@ public class CategoryController(
     [Route("Category/Edit/{id}")]
     public async Task<IActionResult> Edit(int id, EditCategoryCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("info", "Category updated successfully.");
         return RedirectToAction(nameof(Index));

@@ -29,6 +29,11 @@ public class AuthorController(
     [HttpPost]
     public async Task<IActionResult> Create(CreateAuthorCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("success", "Author created successfully.");
         return RedirectToAction(nameof(Index));
@@ -53,6 +58,11 @@ public class AuthorController(
     [Route("Author/Edit/{id}")]
     public async Task<IActionResult> Edit(int id, EditAuthorCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("info", "Author updated successfully.");
         return RedirectToAction(nameof(Index));

@@ -29,6 +29,11 @@ public class PublisherController(
     [HttpPost]
     public async Task<IActionResult> Create(CreatePublisherCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("success", "Publisher created successfully.");
         return RedirectToAction(nameof(Index));
@@ -53,6 +58,11 @@ public class PublisherController(
     [Route("Publisher/Edit/{id}")]
     public async Task<IActionResult> Edit(int id, EditPublisherCommand command)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(command);
+        }
+
         await mediator.Send(command);
         this.SetNotification("info", "Publisher updated successfully.");
         return RedirectToAction(nameof(Index));
