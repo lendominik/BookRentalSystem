@@ -16,7 +16,7 @@ public class CreateAuthorCommandHandler(
     {
         var author = mapper.Map<Core.Entities.Author>(request);
 
-        author.CreatedById = userContext.GetCurrentUser().Id;
+        author.CreatedById = userContext?.GetCurrentUser()?.Id;
 
         repository.Add(author);
 

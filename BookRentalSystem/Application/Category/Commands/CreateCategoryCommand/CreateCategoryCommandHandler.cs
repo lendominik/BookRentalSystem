@@ -16,7 +16,7 @@ public class CreateCategoryCommandHandler(
     {
         var category = mapper.Map<Core.Entities.Category>(request);
 
-        category.CreatedById = userContext.GetCurrentUser().Id;
+        category.CreatedById = userContext?.GetCurrentUser()?.Id;
 
         repository.Add(category);
 

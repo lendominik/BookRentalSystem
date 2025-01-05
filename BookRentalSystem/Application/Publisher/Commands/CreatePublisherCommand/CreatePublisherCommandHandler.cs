@@ -16,7 +16,7 @@ public class CreatePublisherCommandHandler(
     {
         var publisher = mapper.Map<Core.Entities.Publisher>(request);
 
-        publisher.CreatedById = userContext.GetCurrentUser().Id;
+        publisher.CreatedById = userContext?.GetCurrentUser()?.Id;
 
         repository.Add(publisher);
 

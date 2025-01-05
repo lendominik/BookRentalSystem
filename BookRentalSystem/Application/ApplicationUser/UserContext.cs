@@ -5,13 +5,18 @@ namespace Application.ApplicationUser;
 
 public class UserContext(IHttpContextAccessor httpContextAccessor) : IUserContext
 {
-    public CurrentUser GetCurrentUser()
+    public CurrentUser? GetCurrentUser()
     {
         var user = httpContextAccessor?.HttpContext?.User;
 
         if (user is null)
         {
             throw new InvalidOperationException("Context user is not present");
+        }
+
+        if (user.Identity == null || !user.Identity.IsAuthenticated)
+        {
+            return null;
         }
 
         var id = user.FindFirst(x => x.Type == ClaimTypes.NameIdentifier)!.Value;

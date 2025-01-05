@@ -24,7 +24,7 @@ public class CreateBookCommandHandler(
 
         var book = mapper.Map<Core.Entities.Book>(request);
 
-        book.CreatedById = userContext.GetCurrentUser().Id;
+        book.CreatedById = userContext?.GetCurrentUser()?.Id;
 
         repository.Add(book);
 
