@@ -7,11 +7,9 @@ using Application.Category;
 using Application.Category.Commands.EditCategoryCommand;
 using Application.Publisher;
 using Application.Publisher.Commands.EditPublisherCommand;
-using Application.Review;
 using Application.Category.Commands.CreateCategoryCommand;
 using Application.Book.Commands.CreateBookCommand;
 using Application.Publisher.Commands.CreatePublisherCommand;
-using Application.Review.Commands.CreateReviewCommand;
 using Application.Author.Commands.CreateAuthorCommand;
 
 namespace Application.Mappings;
@@ -23,9 +21,6 @@ public class BookRentalSystemMappingProfile : Profile
         CreateMap<AuthorDto, Core.Entities.Author>().ReverseMap();
         CreateMap<CreateAuthorCommand, Core.Entities.Author>();
         CreateMap<EditAuthorCommand, AuthorDto>().ReverseMap();
-
-        CreateMap<ReviewDto, Core.Entities.Review>().ReverseMap();
-        CreateMap<CreateReviewCommand, Core.Entities.Review>();
 
         CreateMap<PublisherDto, Core.Entities.Publisher>().ReverseMap();
         CreateMap<CreatePublisherCommand, Core.Entities.Publisher>();

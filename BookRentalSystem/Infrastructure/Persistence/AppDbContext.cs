@@ -13,7 +13,6 @@ public class AppDbContext : IdentityDbContext
     public DbSet<Book> Books { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Publisher> Publishers { get; set; }
-    public DbSet<Review> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,11 +30,6 @@ public class AppDbContext : IdentityDbContext
             .HasOne(b => b.Publisher)
             .WithMany(c => c.Books)
             .HasForeignKey(b => b.PublisherId);
-
-        modelBuilder.Entity<Review>()
-            .HasOne(r => r.Book)
-            .WithMany(b => b.Reviews)
-            .HasForeignKey(r => r.BookId);
 
         base.OnModelCreating(modelBuilder);
     }

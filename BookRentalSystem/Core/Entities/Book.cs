@@ -13,6 +13,4 @@ public class Book : BaseEntity
 
     public int PublisherId { get; set; }
     public virtual Publisher Publisher { get; set; } = null!;
-
-    public virtual List<Review> Reviews { get; set; } = [];
 }
