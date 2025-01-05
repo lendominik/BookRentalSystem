@@ -1,50 +1,68 @@
-﻿using BookRentalSystem.Category.Commands.CreateCategoryCommand;
-using BookRentalSystem.Category.Commands.DeleteCategoryCommand;
-using BookRentalSystem.Category.Commands.EditCategoryCommand;
-using BookRentalSystem.Category.Queries.GetAllCategoriesQuery;
-using BookRentalSystem.Category.Queries.GetCategoryByIdQuery;
+﻿using Application.Category.Commands.CreateCategoryCommand;
+using Application.Category.Commands.DeleteCategoryCommand;
+using Application.Category.Commands.EditCategoryCommand;
+using Application.Category.Queries.GetAllCategoriesQuery;
+using Application.Category.Queries.GetCategoryByIdQuery;
+using AutoMapper;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
 
-[Route("api/v1/category")]
-[ApiController]
-public class CategoryController(IMediator mediator) : ControllerBase
+public class CategoryController(
+    IMediator mediator,
+    IMapper mapper)
+    : Controller
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> Index()
     {
         var categories = await mediator.Send(new GetAllCategoriesQuery());
-        return Ok(categories);
+        return View(categories);
     }
 
-    [HttpGet("{categoryId}")]
-    public async Task<IActionResult> GetCategory([FromRoute]int categoryId)
+    public IActionResult Create()
     {
-        var category = await mediator.Send(new GetCategoryByIdQuery(categoryId));
-        return Ok(category);
-    }
-
-    [HttpDelete("{categoryId}")]
-    public async Task<IActionResult> DeleteCategory([FromRoute]int categoryId)
-    {
-        await mediator.Send(new DeleteCategoryCommand(categoryId));
-        return Ok();
-    }
-
-    [HttpPut("{categoryId}")]
-    public async Task<IActionResult> UpdateCategory([FromRoute]int categoryId, [FromBody]EditCategoryCommand command)
-    {
-        command.CategoryId = categoryId;
-        await mediator.Send(command);
-        return Ok();
+        return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddCategory([FromBody]CreateCategoryCommand command)
+    public async Task<IActionResult> Create(CreateCategoryCommand command)
     {
         await mediator.Send(command);
-        return Ok();
+        this.SetNotification("success", "Category created successfully.");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Route("Category/Details/{categoryId}")]
+    public async Task<IActionResult> Details(int categoryId)
+    {
+        var categoryDto = await mediator.Send(new GetCategoryByIdQuery(categoryId));
+        return View(categoryDto);
+    }
+
+    [Route("Category/Edit/{categoryId}")]
+    public async Task<IActionResult> Edit(int categoryId)
+    {
+        var categoryDto = await mediator.Send(new GetCategoryByIdQuery(categoryId));
+        var model = mapper.Map<EditCategoryCommand>(categoryDto);
+        return View(model);
+    }
+
+    [HttpPost]
+    [Route("Category/Edit/{categoryId}")]
+    public async Task<IActionResult> Edit(int categoryId, EditCategoryCommand command)
+    {
+        await mediator.Send(command);
+        this.SetNotification("info", "Category updated successfully.");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Route("Category/Delete/{categoryId}")]
+    public async Task<IActionResult> Delete(int categoryId)
+    {
+        await mediator.Send(new DeleteCategoryCommand(categoryId));
+        this.SetNotification("error", "Category deleted successfully.");
+        return RedirectToAction(nameof(Index));
     }
 }

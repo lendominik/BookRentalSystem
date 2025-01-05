@@ -1,49 +1,68 @@
-﻿using BookRentalSystem.Publisher.Commands.CreatePublisherCommand;
-using BookRentalSystem.Publisher.Commands.DeletePublisherCommand;
-using BookRentalSystem.Publisher.Commands.EditPublisherCommand;
-using BookRentalSystem.Publisher.Queries.GetAllPublishersQuery;
-using BookRentalSystem.Publisher.Queries.GetPublisherByIdQuery;
+﻿using Application.Publisher.Commands.CreatePublisherCommand;
+using Application.Publisher.Commands.DeletePublisherCommand;
+using Application.Publisher.Commands.EditPublisherCommand;
+using Application.Publisher.Queries.GetAllPublishersQuery;
+using Application.Publisher.Queries.GetPublisherByIdQuery;
+using AutoMapper;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
 
-[Route("api/v1/publisher")]
-[ApiController]
-public class PublisherController(IMediator mediator) : ControllerBase
+public class PublisherController(
+    IMediator mediator,
+    IMapper mapper)
+    : Controller
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> Index()
     {
         var publishers = await mediator.Send(new GetAllPublishersQuery());
-        return Ok(publishers);
+        return View(publishers);
     }
 
-    [HttpGet("{publisherId}")]
-    public async Task<IActionResult> GetPublisher([FromRoute]int publisherId)
+    public IActionResult Create()
     {
-        var publisher = await mediator.Send(new GetPublisherByIdQuery(publisherId));
-        return Ok(publisher);
-    }
-
-    [HttpDelete("{publisherId}")]
-    public async Task<IActionResult> DeletePublisher([FromRoute]int publisherId)
-    {
-        await mediator.Send(new DeletePublisherCommand(publisherId));
-        return Ok();
-    }
-
-    [HttpPut("{publisherId}")]
-    public async Task<IActionResult> UpdatePublisher([FromRoute]int publisherId, [FromBody]EditPublisherCommand command)
-    {
-        await mediator.Send(command);
-        return Ok();
+        return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPublisher([FromBody] CreatePublisherCommand command)
+    public async Task<IActionResult> Create(CreatePublisherCommand command)
     {
         await mediator.Send(command);
-        return Ok();
+        this.SetNotification("success", "Publisher created successfully.");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Route("Publisher/Details/{publisherId}")]
+    public async Task<IActionResult> Details(int publisherId)
+    {
+        var publisherDto = await mediator.Send(new GetPublisherByIdQuery(publisherId));
+        return View(publisherDto);
+    }
+
+    [Route("Publisher/Edit/{publisherId}")]
+    public async Task<IActionResult> Edit(int publisherId)
+    {
+        var publisherDto = await mediator.Send(new GetPublisherByIdQuery(publisherId));
+        var model = mapper.Map<EditPublisherCommand>(publisherDto);
+        return View(model);
+    }
+
+    [HttpPost]
+    [Route("Publisher/Edit/{publisherId}")]
+    public async Task<IActionResult> Edit(int publisherId, EditPublisherCommand command)
+    {
+        await mediator.Send(command);
+        this.SetNotification("info", "Publisher updated successfully.");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Route("Publisher/Delete/{publisherId}")]
+    public async Task<IActionResult> Delete(int publisherId)
+    {
+        await mediator.Send(new DeletePublisherCommand(publisherId));
+        this.SetNotification("error", "Publisher deleted successfully.");
+        return RedirectToAction(nameof(Index));
     }
 }

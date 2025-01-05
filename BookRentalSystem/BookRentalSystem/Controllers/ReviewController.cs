@@ -1,41 +1,49 @@
-﻿using BookRentalSystem.Review.Commands.CreateReviewCommand;
-using BookRentalSystem.Review.Commands.DeleteReviewCommand;
-using BookRentalSystem.Review.Queries.GetAllReviewsQuery;
-using BookRentalSystem.Review.Queries.GetReviewByIdQuery;
+﻿using Application.Review.Commands.CreateReviewCommand;
+using Application.Review.Commands.DeleteReviewCommand;
+using Application.Review.Queries.GetAllReviewsQuery;
+using Application.Review.Queries.GetReviewByIdQuery;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookRentalSystem.Controllers;
+namespace ReviewRentalSystem.Controllers;
 
-[Route("api/v1/review")]
-[ApiController]
-public class ReviewController(IMediator mediator) : ControllerBase
+public class ReviewController(
+    IMediator mediator)
+    : Controller
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> Index()
     {
         var reviews = await mediator.Send(new GetAllReviewsQuery());
-        return Ok(reviews);
+        return View(reviews);
     }
 
-    [HttpGet("{reviewId}")]
-    public async Task<IActionResult> GetReview([FromRoute]int reviewId)
+    public IActionResult Create()
     {
-        var review = await mediator.Send(new GetReviewByIdQuery(reviewId));
-        return Ok(review);
-    }
-
-    [HttpDelete("{reviewId}")]
-    public async Task<IActionResult> DeleteReview([FromRoute]int reviewId)
-    {
-        await mediator.Send(new DeleteReviewCommand(reviewId));
-        return Ok();
+        return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddReview([FromBody]CreateReviewCommand command)
+    public async Task<IActionResult> Create(CreateReviewCommand command)
     {
         await mediator.Send(command);
-        return Ok();
+        this.SetNotification("success", "Review created successfully.");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Route("Review/Details/{reviewId}")]
+    public async Task<IActionResult> Details(int reviewId)
+    {
+        var reviewDto = await mediator.Send(new GetReviewByIdQuery(reviewId));
+        this.SetNotification("info", "Review updated successfully.");
+        return View(reviewDto);
+    }
+
+    [Route("Review/Delete/{reviewId}")]
+    public async Task<IActionResult> Delete(int reviewId)
+    {
+        await mediator.Send(new DeleteReviewCommand(reviewId));
+        this.SetNotification("error", "Review deleted successfully.");
+        return RedirectToAction(nameof(Index));
     }
 }

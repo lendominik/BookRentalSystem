@@ -1,50 +1,68 @@
-﻿using BookRentalSystem.Author.Commands.CreateAuthorCommand;
-using BookRentalSystem.Author.Commands.DeleteAuthorCommand;
-using BookRentalSystem.Author.Commands.EditAuthorCommand;
-using BookRentalSystem.Author.Queries.GetAllAuthorsQuery;
-using BookRentalSystem.Author.Queries.GetAuthorByIdQuery;
+﻿using Application.Author.Commands.CreateAuthorCommand;
+using Application.Author.Commands.DeleteAuthorCommand;
+using Application.Author.Commands.EditAuthorCommand;
+using Application.Author.Queries.GetAllAuthorsQuery;
+using Application.Author.Queries.GetAuthorByIdQuery;
+using AutoMapper;
+using BookRentalSystem.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
 
-[Route("api/v1/author")]
-[ApiController]
-public class AuthorController(IMediator mediator) : ControllerBase
+public class AuthorController(
+    IMediator mediator,
+    IMapper mapper)
+    : Controller
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> Index()
     {
         var authors = await mediator.Send(new GetAllAuthorsQuery());
-        return Ok(authors);
+        return View(authors);
     }
 
-    [HttpGet("{authorId}")]
-    public async Task<IActionResult> GetAuthor([FromRoute] int authorId)
+    public IActionResult Create()
     {
-        var author = await mediator.Send(new GetAuthorByIdQuery(authorId));
-        return Ok(author);
-    }
-
-    [HttpDelete("{authorId}")]
-    public async Task<IActionResult> DeleteAuthor([FromRoute] int authorId)
-    {
-        await mediator.Send(new DeleteAuthorCommand(authorId));
-        return Ok();
-    }
-
-    [HttpPut("{authorId}")]
-    public async Task<IActionResult> UpdateAuthor([FromRoute] int authorId, [FromBody] EditAuthorCommand command)
-    {
-        command.AuthorId = authorId;
-        await mediator.Send(command);
-        return Ok();
+        return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAuthor([FromBody] CreateAuthorCommand command)
+    public async Task<IActionResult> Create(CreateAuthorCommand command)
     {
         await mediator.Send(command);
-        return Ok();
+        this.SetNotification("success", "Author created successfully.");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Route("Author/Details/{authorId}")]
+    public async Task<IActionResult> Details(int authorId)
+    {
+        var authorDto = await mediator.Send(new GetAuthorByIdQuery(authorId));
+        return View(authorDto);
+    }
+
+    [Route("Author/Edit/{authorId}")]
+    public async Task<IActionResult> Edit(int authorId)
+    {
+        var authorDto = await mediator.Send(new GetAuthorByIdQuery(authorId));
+        var model = mapper.Map<EditAuthorCommand>(authorDto);
+        return View(model);
+    }
+
+    [HttpPost]
+    [Route("Author/Edit/{authorId}")]
+    public async Task<IActionResult> Edit(int authorId, EditAuthorCommand command)
+    {
+        await mediator.Send(command);
+        this.SetNotification("info", "Author updated successfully.");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Route("Author/Delete/{authorId}")]
+    public async Task<IActionResult> Delete(int authorId)
+    {
+        await mediator.Send(new DeleteAuthorCommand(authorId));
+        this.SetNotification("error", "Author deleted successfully.");
+        return RedirectToAction(nameof(Index));
     }
 }
