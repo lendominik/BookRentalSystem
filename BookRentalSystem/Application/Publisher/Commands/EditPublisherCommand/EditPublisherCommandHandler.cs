@@ -10,7 +10,7 @@ public class EditPublisherCommandHandler(
 {
     public async Task Handle(EditPublisherCommand request, CancellationToken cancellationToken)
     {
-        var publisher = await repository.GetByIdAsync(request.PublisherId);
+        var publisher = await repository.GetByIdAsync(request.Id);
 
         if (publisher is null)
             throw new NotFoundException("Publisher not found");

@@ -10,7 +10,7 @@ public class EditAuthorCommandHandler(
 {
     public async Task Handle(EditAuthorCommand request, CancellationToken cancellationToken)
     {
-        var author = await repository.GetByIdAsync(request.AuthorId);
+        var author = await repository.GetByIdAsync(request.Id);
 
         if (author is null)
             throw new NotFoundException("Author not found");

@@ -2,8 +2,7 @@
 
 namespace Application.Publisher.Commands.EditPublisherCommand;
 
-public class EditPublisherCommand : IRequest
+public class EditPublisherCommand : PublisherDto, IRequest
 {
-    public int PublisherId { get; set; }
-    public string? Description { get; set; }
+    
 }

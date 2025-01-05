@@ -10,7 +10,7 @@ public class EditCategoryCommandHandler(
 {
     public async Task Handle(EditCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await repository.GetByIdAsync(request.CategoryId);
+        var category = await repository.GetByIdAsync(request.Id);
 
         if (category is null)
             throw new NotFoundException("Category not found");

@@ -41,17 +41,17 @@ public class CategoryController(
         return View(categoryDto);
     }
 
-    [Route("Category/Edit/{categoryId}")]
-    public async Task<IActionResult> Edit(int categoryId)
+    [Route("Category/Edit/{id}")]
+    public async Task<IActionResult> Edit(int id)
     {
-        var categoryDto = await mediator.Send(new GetCategoryByIdQuery(categoryId));
+        var categoryDto = await mediator.Send(new GetCategoryByIdQuery(id));
         var model = mapper.Map<EditCategoryCommand>(categoryDto);
         return View(model);
     }
 
     [HttpPost]
-    [Route("Category/Edit/{categoryId}")]
-    public async Task<IActionResult> Edit(int categoryId, EditCategoryCommand command)
+    [Route("Category/Edit/{id}")]
+    public async Task<IActionResult> Edit(int id, EditCategoryCommand command)
     {
         await mediator.Send(command);
         this.SetNotification("info", "Category updated successfully.");

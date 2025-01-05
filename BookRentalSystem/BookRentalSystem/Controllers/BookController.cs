@@ -58,16 +58,29 @@ public class BookController(
         return View(bookDto);
     }
 
-    [Route("Book/Edit/{bookId}")]
-    public async Task<IActionResult> Edit(int bookId)
+    [Route("Book/Edit/{id}")]
+    public async Task<IActionResult> Edit(int id)
     {
-        var bookDto = await mediator.Send(new GetBookByIdQuery(bookId));
+        var bookDto = await mediator.Send(new GetBookByIdQuery(id));
         var model = mapper.Map<EditBookCommand>(bookDto);
+
+        model.Categories = (await mediator.Send(new GetAllCategoriesQuery()))
+            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
+            .ToList();
+
+        model.Authors = (await mediator.Send(new GetAllAuthorsQuery()))
+            .Select(x => new SelectListItem { Text = $"{x.FirstName} {x.LastName}", Value = x.Id.ToString() })
+            .ToList();
+
+        model.Publishers = (await mediator.Send(new GetAllPublishersQuery()))
+            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
+            .ToList();
+
         return View(model);
     }
 
     [HttpPost]
-    [Route("Book/Edit/{bookId}")]
+    [Route("Book/Edit/{id}")]
     public async Task<IActionResult> Edit(int bookId, EditBookCommand command)
     {
         await mediator.Send(command);

@@ -41,17 +41,17 @@ public class AuthorController(
         return View(authorDto);
     }
 
-    [Route("Author/Edit/{authorId}")]
-    public async Task<IActionResult> Edit(int authorId)
+    [Route("Author/Edit/{id}")]
+    public async Task<IActionResult> Edit(int id)
     {
-        var authorDto = await mediator.Send(new GetAuthorByIdQuery(authorId));
+        var authorDto = await mediator.Send(new GetAuthorByIdQuery(id));
         var model = mapper.Map<EditAuthorCommand>(authorDto);
         return View(model);
     }
 
     [HttpPost]
-    [Route("Author/Edit/{authorId}")]
-    public async Task<IActionResult> Edit(int authorId, EditAuthorCommand command)
+    [Route("Author/Edit/{id}")]
+    public async Task<IActionResult> Edit(int id, EditAuthorCommand command)
     {
         await mediator.Send(command);
         this.SetNotification("info", "Author updated successfully.");
