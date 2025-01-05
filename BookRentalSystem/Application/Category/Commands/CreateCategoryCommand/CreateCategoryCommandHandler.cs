@@ -3,7 +3,6 @@ using Application.Exceptions;
 using Core.Contracts;
 using MediatR;
 using Application.ApplicationUser;
-using Core.Entities;
 
 namespace Application.Category.Commands.CreateCategoryCommand;
 
