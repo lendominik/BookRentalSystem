@@ -2,13 +2,16 @@
 using Application.Exceptions;
 using Core.Contracts;
 using MediatR;
+using Application.ApplicationUser;
+using Core.Entities;
 
 namespace Application.Book.Commands.CreateBookCommand;
 
 public class CreateBookCommandHandler(
     IGenericRepository<Core.Entities.Book> repository,
     IUnitOfWork unitOfWork,
-    IMapper mapper)
+    IMapper mapper,
+    IUserContext userContext)
     : IRequestHandler<CreateBookCommand>
 {
     public async Task Handle(CreateBookCommand request, CancellationToken cancellationToken)
@@ -21,6 +24,8 @@ public class CreateBookCommandHandler(
             throw new NotFoundException("Author, Publisher or Category not found");
 
         var book = mapper.Map<Core.Entities.Book>(request);
+
+        book.CreatedById = userContext.GetCurrentUser().Id;
 
         repository.Add(book);
 
