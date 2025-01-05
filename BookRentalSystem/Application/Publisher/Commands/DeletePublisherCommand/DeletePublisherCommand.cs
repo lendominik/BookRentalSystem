@@ -2,12 +2,4 @@
 
 namespace Application.Publisher.Commands.DeletePublisherCommand;
 
-public class DeletePublisherCommand : IRequest
-{
-    public int PublisherId { get; set; }
-
-    public DeletePublisherCommand(int publisherId)
-    {
-        PublisherId = publisherId;
-    }
-}
+public record DeletePublisherCommand(int PublisherId) : IRequest;
