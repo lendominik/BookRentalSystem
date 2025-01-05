@@ -2,12 +2,4 @@
 
 namespace Application.Author.Queries.GetAuthorByIdQuery;
 
-public class GetAuthorByIdQuery : IRequest<AuthorDto>
-{
-    public int AuthorId { get; set; }
-
-    public GetAuthorByIdQuery(int authorId)
-    {
-        AuthorId = authorId;
-    }
-}
+public record GetAuthorByIdQuery(int AuthorId) : IRequest<AuthorDto>;
