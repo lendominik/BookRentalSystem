@@ -1,8 +1,11 @@
-﻿namespace Application.Category;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Application.Category;
 
 public class CategoryDto
 {
     public int Id { get; set; }
-    public string Name { get; set; } = null!;
+    [Required]
+    public string Name { get; set; } = default!;
     public string? Description { get; set; }
 }

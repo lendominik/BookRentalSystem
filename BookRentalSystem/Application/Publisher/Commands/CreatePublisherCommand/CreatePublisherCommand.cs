@@ -4,4 +4,5 @@ namespace Application.Publisher.Commands.CreatePublisherCommand;
 
 public class CreatePublisherCommand : PublisherDto, IRequest
 {
+
 }
