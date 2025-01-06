@@ -1,9 +1,10 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> optionsBuilder) : base(optionsBuilder)
     { }
@@ -12,7 +13,6 @@ public class AppDbContext : DbContext
     public DbSet<Book> Books { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Publisher> Publishers { get; set; }
-    public DbSet<Review> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,11 +30,6 @@ public class AppDbContext : DbContext
             .HasOne(b => b.Publisher)
             .WithMany(c => c.Books)
             .HasForeignKey(b => b.PublisherId);
-
-        modelBuilder.Entity<Review>()
-            .HasOne(r => r.Book)
-            .WithMany(b => b.Reviews)
-            .HasForeignKey(r => r.BookId);
 
         base.OnModelCreating(modelBuilder);
     }

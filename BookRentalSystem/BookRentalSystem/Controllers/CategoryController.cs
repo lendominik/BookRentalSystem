@@ -6,6 +6,7 @@ using Application.Category.Queries.GetCategoryByIdQuery;
 using AutoMapper;
 using BookRentalSystem.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
@@ -15,17 +16,20 @@ public class CategoryController(
     IMapper mapper)
     : Controller
 {
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var categories = await mediator.Send(new GetAllCategoriesQuery());
         return View(categories);
     }
 
+    [Authorize]
     public IActionResult Create()
     {
         return View();
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(CreateCategoryCommand command)
     {
@@ -39,6 +43,7 @@ public class CategoryController(
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize]
     [Route("Category/Details/{categoryId}")]
     public async Task<IActionResult> Details(int categoryId)
     {
@@ -46,6 +51,7 @@ public class CategoryController(
         return View(categoryDto);
     }
 
+    [Authorize]
     [Route("Category/Edit/{id}")]
     public async Task<IActionResult> Edit(int id)
     {
@@ -54,6 +60,7 @@ public class CategoryController(
         return View(model);
     }
 
+    [Authorize]
     [HttpPost]
     [Route("Category/Edit/{id}")]
     public async Task<IActionResult> Edit(int id, EditCategoryCommand command)
@@ -68,6 +75,7 @@ public class CategoryController(
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize]
     [Route("Category/Delete/{categoryId}")]
     public async Task<IActionResult> Delete(int categoryId)
     {

@@ -6,6 +6,7 @@ using Application.Publisher.Queries.GetPublisherByIdQuery;
 using AutoMapper;
 using BookRentalSystem.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookRentalSystem.Controllers;
@@ -15,17 +16,20 @@ public class PublisherController(
     IMapper mapper)
     : Controller
 {
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var publishers = await mediator.Send(new GetAllPublishersQuery());
         return View(publishers);
     }
 
+    [Authorize]
     public IActionResult Create()
     {
         return View();
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(CreatePublisherCommand command)
     {
@@ -39,6 +43,7 @@ public class PublisherController(
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize]
     [Route("Publisher/Details/{publisherId}")]
     public async Task<IActionResult> Details(int publisherId)
     {
@@ -46,6 +51,7 @@ public class PublisherController(
         return View(publisherDto);
     }
 
+    [Authorize]
     [Route("Publisher/Edit/{id}")]
     public async Task<IActionResult> Edit(int id)
     {
@@ -54,6 +60,7 @@ public class PublisherController(
         return View(model);
     }
 
+    [Authorize]
     [HttpPost]
     [Route("Publisher/Edit/{id}")]
     public async Task<IActionResult> Edit(int id, EditPublisherCommand command)
@@ -68,6 +75,7 @@ public class PublisherController(
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize]
     [Route("Publisher/Delete/{publisherId}")]
     public async Task<IActionResult> Delete(int publisherId)
     {
