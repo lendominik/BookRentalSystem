@@ -11,6 +11,8 @@ public class AuthorDto
     public string LastName { get; set; } = default!;
     public string? Description { get; set; }
     public string? Nationality { get; set; }
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? DateOfBirth { get; set; }
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? DateOfDeath { get; set; }
 }
