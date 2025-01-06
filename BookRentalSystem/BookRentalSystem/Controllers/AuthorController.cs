@@ -16,6 +16,7 @@ public class AuthorController(
     IMapper mapper)
     : Controller
 {
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var authors = await mediator.Send(new GetAllAuthorsQuery());
@@ -42,6 +43,7 @@ public class AuthorController(
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize]
     [Route("Author/Details/{authorId}")]
     public async Task<IActionResult> Details(int authorId)
     {

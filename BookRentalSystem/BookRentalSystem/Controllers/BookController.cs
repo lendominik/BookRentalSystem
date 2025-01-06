@@ -9,6 +9,7 @@ using Application.Publisher.Queries.GetAllPublishersQuery;
 using AutoMapper;
 using BookRentalSystem.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -19,12 +20,14 @@ public class BookController(
     IMapper mapper)
     : Controller
 {
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var books = await mediator.Send(new GetAllBooksQuery());
         return View(books);
     }
 
+    [Authorize]
     public async Task<IActionResult> Create()
     {
         var command = new CreateBookCommand
@@ -43,6 +46,7 @@ public class BookController(
         return View(command);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(CreateBookCommand command)
     {
@@ -56,6 +60,7 @@ public class BookController(
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize]
     [Route("Book/Details/{bookId}")]
     public async Task<IActionResult> Details(int bookId)
     {
@@ -63,6 +68,7 @@ public class BookController(
         return View(bookDto);
     }
 
+    [Authorize]
     [Route("Book/Edit/{id}")]
     public async Task<IActionResult> Edit(int id)
     {
@@ -84,6 +90,7 @@ public class BookController(
         return View(model);
     }
 
+    [Authorize]
     [HttpPost]
     [Route("Book/Edit/{id}")]
     public async Task<IActionResult> Edit(int bookId, EditBookCommand command)
@@ -98,6 +105,7 @@ public class BookController(
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize]
     [Route("Book/Delete/{bookId}")]
     public async Task<IActionResult> Delete(int bookId)
     {
