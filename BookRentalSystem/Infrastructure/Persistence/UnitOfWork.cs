@@ -7,8 +7,7 @@ namespace Infrastructure.Persistence;
 
 public class UnitOfWork(AppDbContext dbContext) : IUnitOfWork
 {
-    private readonly AppDbContext dbContext;
-    private Hashtable _repositories;
+    private Hashtable _repositories = [];
 
     public async Task<int> Complete()
     {
