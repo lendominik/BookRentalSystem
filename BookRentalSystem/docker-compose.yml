@@ -7,7 +7,6 @@ services:
       dockerfile: BookRentalSystem/Dockerfile
     ports:
       - "5000:5000"
-      - "5001:5001"
     depends_on:
       - bookrentalsystem-db
     networks:
